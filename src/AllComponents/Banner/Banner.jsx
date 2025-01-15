@@ -4,7 +4,7 @@ import deli from '../../assets/banner/deli.jpg';
 const Banner = () => {
     return (
         <div
-            className="relative bg-cover bg-center lg:h-[700px] h-[300px] w-full"
+            className="relative bg-cover bg-center lg:h-[800px] h-[300px] w-full"
             style={{ backgroundImage: `url(${deli})` }}
         >
             <div className="absolute inset-0 bg-black bg-opacity-50"></div>
