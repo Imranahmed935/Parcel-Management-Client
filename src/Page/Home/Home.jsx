@@ -1,10 +1,10 @@
-import useAuth from "@/Hooks/useAuth";
+import Banner from "@/AllComponents/Banner/Banner";
 
 const Home = () => {
-  const {name} = useAuth()
+  
   return (
     <div>
-      <h1>this is home page</h1>
+     <Banner/>
     </div>
   );
 };

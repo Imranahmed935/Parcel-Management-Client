@@ -1,25 +1,43 @@
 import useAuth from "@/Hooks/useAuth";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const SignUp = () => {
-  const { handleSignUp } = useAuth();
+  const { handleSignUp, handleUpdateProfile } = useAuth();
+  const axiosPublic = useAxiosPublic();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    handleSignUp(data.email, data.password).then((result) => {
-      console.log(result.user);
-      const user = {
-        name: data.name,
-        email: data.email,
-      };
+  const onSubmit = async (data) => {
+    setLoading(true);
+    setError("");
+    try {
+      const result = await handleSignUp(data.email, data.password);
+      const user = { name: data.username, email: data.email, role: data.role };
 
+      const response = await axiosPublic.post("/users", user);
 
-    });
+      if (response.data.insertedId) {
+        console.log("User added successfully");
+
+        await handleUpdateProfile(data.username, data.photo);
+        reset();
+      }
+    } catch (err) {
+      console.error("Error during registration:", err.message);
+      setError("Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -28,6 +46,9 @@ const SignUp = () => {
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">
           Register
         </h2>
+        {error && (
+          <p className="text-sm text-red-500 text-center mb-4">{error}</p>
+        )}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label
@@ -49,17 +70,19 @@ const SignUp = () => {
               </span>
             )}
           </div>
+
+          {/* Photo */}
           <div>
             <label
               htmlFor="photo"
               className="block text-sm font-medium text-gray-600"
             >
-              Photo
+              Photo URL
             </label>
             <input
               id="photo"
               type="text"
-              placeholder="Photo"
+              placeholder="Enter photo URL"
               {...register("photo", { required: true })}
               className="w-full p-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -68,6 +91,7 @@ const SignUp = () => {
             )}
           </div>
 
+          {/* Email */}
           <div>
             <label
               htmlFor="email"
@@ -95,6 +119,7 @@ const SignUp = () => {
             )}
           </div>
 
+          {/* Password */}
           <div>
             <label
               htmlFor="password"
@@ -122,6 +147,7 @@ const SignUp = () => {
             )}
           </div>
 
+          {/* Role Selection */}
           <div>
             <label
               htmlFor="role"
@@ -139,21 +165,29 @@ const SignUp = () => {
               <option value="deliveryMan">Delivery Man</option>
             </select>
             {errors.role && (
-              <span className="text-sm text-red-500">Role is required.</span>
+              <span className="text-sm text-red-500">
+                Please select your role.
+              </span>
             )}
           </div>
 
+          {/* Submit Button */}
           <div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              disabled={loading}
+              className={`w-full bg-blue-500 text-white py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+              }`}
             >
-              Register
+              {loading ? "Registering..." : "Register"}
             </button>
           </div>
+
+          {/* Redirect to Login */}
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
-              already have an account?{" "}
+              Already have an account?{" "}
               <Link
                 to="/login"
                 className="text-blue-500 hover:underline font-medium"

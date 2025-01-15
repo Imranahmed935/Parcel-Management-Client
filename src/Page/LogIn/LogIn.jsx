@@ -1,12 +1,13 @@
 import useAuth from "@/Hooks/useAuth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LogIn = () => {
   const {handleLogin} = useAuth()
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const navigate = useNavigate()
 
   const togglePasswordVisibility = () => {
     setPasswordVisible((prev) => !prev);
@@ -16,6 +17,8 @@ const LogIn = () => {
     handleLogin(data.email, data.password)
     .then(result =>{
       console.log(result.user)
+      navigate('/')
+      reset()
     })
     .catch(err=>{
       console.log(err.message)
@@ -26,7 +29,7 @@ const LogIn = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-700">
-          Log In
+          Welcome back
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Email Input */}

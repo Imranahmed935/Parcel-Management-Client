@@ -14,9 +14,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import useAuth from "@/Hooks/useAuth";
 
 const Navbar = () => {
   const [position, setPosition] = useState("bottom");
+  const { user, handleLogout } = useAuth();
+
+  const handleLogoutForm = () => {
+    handleLogout()
+      .then(() => {
+        console.log("successfully logout");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="flex justify-between items-center p-4 bg-gray-100 shadow-md">
@@ -27,7 +39,9 @@ const Navbar = () => {
           src={logo}
           alt="SwiftShip Logo"
         />
-        <h1 className="text-3xl font-bold text-gray-800">SwiftShip</h1>
+        <h1 className="lg:text-3xl text-2xl font-bold text-gray-800">
+          SwiftShip
+        </h1>
       </div>
 
       {/* Navigation Section */}
@@ -40,35 +54,47 @@ const Navbar = () => {
           <MdNotifications className="text-2xl text-gray-700 hover:text-blue-500" />
         </NavLink>
 
-        <Link to={"/login"}>
-          {" "}
-          <Button className="bg-blue-500 text-white hover:bg-blue-600">
-            Login
-          </Button>
-        </Link>
-
-        {/* Dropdown Menu */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Options</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup
-              value={position}
-              onValueChange={setPosition}
-            >
-              <DropdownMenuRadioItem value="top">User</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="bottom">
-                Dashboard
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="right">
-                LogOut
-              </DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {user ? (
+          <>
+            {/* Dropdown Menu */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                {/* <Button variant="outline">Options</Button> */}
+                <img
+                  className="w-10 h-10 rounded-full"
+                  src={user?.photoURL}
+                  alt=""
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup
+                  value={position}
+                  onValueChange={setPosition}
+                >
+                  <DropdownMenuRadioItem value="top">
+                    User
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="bottom">
+                    Dashboard
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="right">
+                    <Button onClick={handleLogoutForm}>LogOut</Button>
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
+        ) : (
+          <>
+            <Link to={"/login"}>
+              {" "}
+              <Button className="bg-blue-500 text-white hover:bg-blue-600">
+                Login
+              </Button>
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );
