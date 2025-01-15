@@ -76,7 +76,9 @@ const Navbar = () => {
                     User
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="bottom">
-                    Dashboard
+                    <NavLink to={'/dashboard'}>
+                          Dashboard
+                    </NavLink>
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="right">
                     <Button onClick={handleLogoutForm}>LogOut</Button>
