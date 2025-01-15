@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+      // Define the base URL for your paths
+      "baseUrl": ".",
+      "paths": {
+        "@/*": ["src/*"]
+      },
+      "jsx": "react" // Add this if you're using React
+    }
+  }
