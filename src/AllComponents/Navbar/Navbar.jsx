@@ -1,8 +1,8 @@
 "use client";
 
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { MdNotifications } from "react-icons/md";
-import  { useState } from "react";
+import { useState } from "react";
 import logo from "../../assets/logo/parcel2.png";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +22,11 @@ const Navbar = () => {
     <div className="flex justify-between items-center p-4 bg-gray-100 shadow-md">
       {/* Logo Section */}
       <div className="flex items-center gap-4">
-        <img className="w-16 h-16 rounded-full" src={logo} alt="SwiftShip Logo" />
+        <img
+          className="w-16 h-16 rounded-full"
+          src={logo}
+          alt="SwiftShip Logo"
+        />
         <h1 className="text-3xl font-bold text-gray-800">SwiftShip</h1>
       </div>
 
@@ -36,7 +40,12 @@ const Navbar = () => {
           <MdNotifications className="text-2xl text-gray-700 hover:text-blue-500" />
         </NavLink>
 
-        <Button className="bg-blue-500 text-white hover:bg-blue-600">Login</Button>
+        <Link to={"/login"}>
+          {" "}
+          <Button className="bg-blue-500 text-white hover:bg-blue-600">
+            Login
+          </Button>
+        </Link>
 
         {/* Dropdown Menu */}
         <DropdownMenu>
@@ -46,10 +55,17 @@ const Navbar = () => {
           <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuRadioGroup value={position} onValueChange={setPosition}>
+            <DropdownMenuRadioGroup
+              value={position}
+              onValueChange={setPosition}
+            >
               <DropdownMenuRadioItem value="top">User</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="bottom">Dashboard</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="right">LogOut</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="bottom">
+                Dashboard
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="right">
+                LogOut
+              </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
