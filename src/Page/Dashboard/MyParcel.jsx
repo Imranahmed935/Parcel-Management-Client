@@ -1,7 +1,6 @@
 import useAuth from '@/Hooks/useAuth';
 import useAxiosSecure from '@/Hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
 
 const MyParcel = () => {
   const { user } = useAuth();
@@ -25,7 +24,7 @@ const MyParcel = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-2xl font-bold mb-6">My Parcels</h1>
+      <h1 className="text-2xl font-bold text-indigo-500 mb-6">My Parcels</h1>
 
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-left border-collapse border border-gray-300">

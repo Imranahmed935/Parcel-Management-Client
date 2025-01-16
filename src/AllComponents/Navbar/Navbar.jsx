@@ -73,7 +73,7 @@ const Navbar = () => {
                   onValueChange={setPosition}
                 >
                   <DropdownMenuRadioItem value="top">
-                    {user.displayName}
+                    {user?.displayName}
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="bottom">
                     <NavLink to={'/dashboard'}>

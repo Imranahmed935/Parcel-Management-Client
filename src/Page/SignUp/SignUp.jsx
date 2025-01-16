@@ -22,7 +22,7 @@ const SignUp = () => {
     setError("");
     try {
       const result = await handleSignUp(data.email, data.password);
-      const user = { name: data.username, email: data.email, role: data.role };
+      const user = { name: data.username, email: data.email, role: data.role, photo:data.photo };
 
       const response = await axiosPublic.post("/users", user);
 
