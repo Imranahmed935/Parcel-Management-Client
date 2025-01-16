@@ -1,12 +1,14 @@
 import useAuth from "@/Hooks/useAuth";
-import React, { useState, useEffect } from "react";
+import useAxiosSecure from "@/Hooks/useAxiosSecure";
+import React, { useState } from "react";
 
 const BookParcel = () => {
   const { user } = useAuth();
   
-  const [price, setPrice] = useState(50); // Default price for 1 kg
+  const [price, setPrice] = useState(50); 
 
-  const handleFormValue = (e) => {
+  const handleFormValue = async (e) => {
+    const axiosSecure = useAxiosSecure()
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
@@ -20,15 +22,19 @@ const BookParcel = () => {
     const date = form.date.value;
     const latitude = form.latitude.value;
     const longitude = form.longitude.value;
-    const price = form.price.value; // Calculated price
+    const price = form.price.value; 
     const status = 'pending';
-
     const allData = { name, email, number, type, weight, receiverName, receiverPhone, address, date, latitude, longitude, price, status };
-
+     const res  = await axiosSecure.post('/bookParcel', allData)
+     if(res.data.insertedId){
+      alert('yes')
+     }
+     
     console.log(allData);
+
   };
 
-  // Handle price change based on weight
+
   const handleWeightChange = (e) => {
     const weight = e.target.value;
     if (weight === "1") {
@@ -99,7 +105,7 @@ const BookParcel = () => {
               placeholder="Enter parcel weight"
               className="w-full mt-2 p-3 border-2 border-gray-300 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500"
               required
-              onChange={handleWeightChange} // Trigger price calculation on weight change
+              onChange={handleWeightChange}
             />
           </div>
           <div>
@@ -171,7 +177,7 @@ const BookParcel = () => {
             <input
               type="text"
               name="price"
-              value={`${price} Tk`} // Display the calculated price
+              value={`${price} Tk`} 
               readOnly
               className="w-full mt-2 p-3 border-2 border-gray-300 rounded-md bg-blue-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500"
             />
