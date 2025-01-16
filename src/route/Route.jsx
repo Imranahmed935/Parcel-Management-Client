@@ -1,3 +1,4 @@
+import UpdateProfile from "@/AllComponents/UpdateProfile/UpdateProfile";
 import MainLayout from "@/Layout/MainLayout";
 import BookParcel from "@/Page/Dashboard/BookParcel";
 import Dashboard from "@/Page/Dashboard/Dashboard";
@@ -43,6 +44,10 @@ import { createBrowserRouter } from "react-router-dom";
                     {
                         path:'myParcel',
                         element:<MyParcel/>
+                    },
+                    {
+                        path:'update',
+                        element:<UpdateProfile/>
                     }
                 ]
             }

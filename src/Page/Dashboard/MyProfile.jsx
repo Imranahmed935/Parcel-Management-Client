@@ -4,6 +4,7 @@ import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const imageApiKey = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -124,9 +125,10 @@ const MyProfile = () => {
 
     
         <div className="mt-8">
+          <Link to={'/dashboard/update'}>
           <button className="w-full px-6 py-3 bg-indigo-500 text-white font-semibold rounded-md shadow-lg hover:bg-indigo-600 transition-all">
             Update Profile
-          </button>
+          </button></Link>
         </div>
       </div>
     </div>
