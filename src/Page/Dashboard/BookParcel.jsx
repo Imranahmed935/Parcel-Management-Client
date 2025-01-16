@@ -1,6 +1,7 @@
 import useAuth from "@/Hooks/useAuth";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 const BookParcel = () => {
   const { user } = useAuth();
@@ -40,10 +41,8 @@ const BookParcel = () => {
     };
     const res = await axiosSecure.post("/bookParcel", allData);
     if (res.data.insertedId) {
-      alert("Parcel booked successfully!");
+      toast.success("Parcel booked successfully!");
     }
-
-    console.log(allData);
   };
 
   const handleWeightChange = (e) => {

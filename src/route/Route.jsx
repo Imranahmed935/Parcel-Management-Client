@@ -1,3 +1,4 @@
+import UpdateParcel from "@/AllComponents/UpdateParcel/UpdateParcel";
 import UpdateProfile from "@/AllComponents/UpdateProfile/UpdateProfile";
 import MainLayout from "@/Layout/MainLayout";
 import BookParcel from "@/Page/Dashboard/BookParcel";
@@ -48,6 +49,10 @@ import { createBrowserRouter } from "react-router-dom";
                     {
                         path:'update',
                         element:<UpdateProfile/>
+                    },
+                    {
+                        path:'updateParcel/:id',
+                        element:<UpdateParcel/>
                     }
                 ]
             }

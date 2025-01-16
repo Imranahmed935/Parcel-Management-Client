@@ -1,6 +1,7 @@
 import useAuth from '@/Hooks/useAuth';
 import useAxiosSecure from '@/Hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 const MyParcel = () => {
   const { user } = useAuth();
@@ -70,9 +71,9 @@ const MyParcel = () => {
                 </td>
                 <td className="px-2 py-2 border border-gray-300 space-y-2">
               
-                  <button className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                  <Link to={`/dashboard/updateParcel/${parcel._id}`}><button className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
                     Update
-                  </button>
+                  </button></Link>
                   <button className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
                     Cancel
                   </button>

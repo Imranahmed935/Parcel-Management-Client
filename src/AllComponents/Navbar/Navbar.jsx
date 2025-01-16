@@ -32,7 +32,6 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center p-4 bg-gray-100 shadow-md">
-      {/* Logo Section */}
       <div className="flex items-center gap-4">
         <img
           className="w-16 h-16 rounded-full"
@@ -44,7 +43,7 @@ const Navbar = () => {
         </h1>
       </div>
 
-      {/* Navigation Section */}
+
       <div className="flex items-center gap-6">
         <NavLink to="/" className="text-lg text-gray-700 hover:text-blue-500">
           Home
@@ -56,12 +55,12 @@ const Navbar = () => {
 
         {user ? (
           <>
-            {/* Dropdown Menu */}
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                {/* <Button variant="outline">Options</Button> */}
+ 
                 <img
-                  className="w-10 h-10 rounded-full"
+                  className="w-10 h-10 cursor-pointer rounded-full"
                   src={user?.photoURL}
                   alt=""
                 />

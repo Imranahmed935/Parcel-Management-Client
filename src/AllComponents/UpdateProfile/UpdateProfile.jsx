@@ -2,8 +2,11 @@ import useAuth from "@/Hooks/useAuth";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const UpdateProfile = () => {
+    const navigate = useNavigate()
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const { data = {} } = useQuery({
@@ -22,7 +25,10 @@ const UpdateProfile = () => {
     const updateData = {name, email}
 
     const res = await axiosSecure.patch(`/updateUser/${user.email}`, updateData)
-     console.log(res.data)
+     if(res.data.modifiedCount > 0){
+        navigate('/dashboard/profile')
+        toast.success('Profile Update Successfully.')
+     }
 
   }
   return (

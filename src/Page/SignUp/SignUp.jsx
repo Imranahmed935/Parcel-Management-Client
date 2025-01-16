@@ -3,6 +3,7 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 const SignUp = () => {
   const { handleSignUp, handleUpdateProfile } = useAuth();
@@ -27,7 +28,7 @@ const SignUp = () => {
       const response = await axiosPublic.post("/users", user);
 
       if (response.data.insertedId) {
-        console.log("User added successfully");
+        toast.success("user created successfully.");
 
         await handleUpdateProfile(data.username, data.photo);
         reset();
@@ -71,7 +72,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Photo */}
           <div>
             <label
               htmlFor="photo"
@@ -91,7 +91,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Email */}
           <div>
             <label
               htmlFor="email"
@@ -118,8 +117,6 @@ const SignUp = () => {
               </span>
             )}
           </div>
-
-          {/* Password */}
           <div>
             <label
               htmlFor="password"
@@ -147,7 +144,6 @@ const SignUp = () => {
             )}
           </div>
 
-          {/* Role Selection */}
           <div>
             <label
               htmlFor="role"
@@ -170,8 +166,6 @@ const SignUp = () => {
               </span>
             )}
           </div>
-
-          {/* Submit Button */}
           <div>
             <button
               type="submit"
@@ -184,7 +178,6 @@ const SignUp = () => {
             </button>
           </div>
 
-          {/* Redirect to Login */}
           <div className="text-center mt-4">
             <p className="text-sm text-gray-600">
               Already have an account?{" "}
