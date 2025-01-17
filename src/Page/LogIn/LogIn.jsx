@@ -1,3 +1,4 @@
+import SocialLogin from "@/AllComponents/SocialLogin/SocialLogin";
 import useAuth from "@/Hooks/useAuth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -119,7 +120,7 @@ const LogIn = () => {
         </form>
 
         {/* Redirect to Signup */}
-        <div className="text-center mt-4">
+        <div className="text-center mt-4 mb-4" >
           <p className="text-sm text-gray-600">
             Don’t have an account?{" "}
             <Link
@@ -130,6 +131,7 @@ const LogIn = () => {
             </Link>
           </p>
         </div>
+        <SocialLogin/>
       </div>
     </div>
   );

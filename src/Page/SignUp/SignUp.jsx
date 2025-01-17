@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import SocialLogin from "@/AllComponents/SocialLogin/SocialLogin";
 
 const SignUp = () => {
   const { handleSignUp, handleUpdateProfile } = useAuth();
@@ -23,7 +24,7 @@ const SignUp = () => {
     setError("");
     try {
       const result = await handleSignUp(data.email, data.password);
-      const user = { name: data.username, email: data.email, role: data.role };
+      const user = { name: data.username, phone:data.mobile, photo:data.photo, email: data.email, role: data.role };
 
       const response = await axiosPublic.post("/users", user);
 
@@ -50,7 +51,8 @@ const SignUp = () => {
         {error && (
           <p className="text-sm text-red-500 text-center mb-4">{error}</p>
         )}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+       
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mb-4">
           <div>
             <label
               htmlFor="username"
@@ -68,6 +70,26 @@ const SignUp = () => {
             {errors.username && (
               <span className="text-sm text-red-500">
                 Username is required.
+              </span>
+            )}
+          </div>
+          <div>
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Mobile No
+            </label>
+            <input
+              id="mobile"
+              type="tel"
+              {...register("mobile", { required: true })}
+              placeholder="Enter your Mobile"
+              className="w-full p-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            {errors.mobile && (
+              <span className="text-sm text-red-500">
+                mobile is required.
               </span>
             )}
           </div>
@@ -189,7 +211,9 @@ const SignUp = () => {
               </Link>
             </p>
           </div>
+         
         </form>
+        <SocialLogin/>
       </div>
     </div>
   );

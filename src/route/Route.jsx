@@ -1,3 +1,7 @@
+import AllDeliveryMan from "@/AdminDashboard/AllDeliveryMan";
+import AllParcel from "@/AdminDashboard/AllParcel";
+import AllUsers from "@/AdminDashboard/AllUsers";
+import Statistics from "@/AdminDashboard/Statistics";
 import UpdateParcel from "@/AllComponents/UpdateParcel/UpdateParcel";
 import UpdateProfile from "@/AllComponents/UpdateProfile/UpdateProfile";
 import MainLayout from "@/Layout/MainLayout";
@@ -30,31 +34,47 @@ import { createBrowserRouter } from "react-router-dom";
                 path:'/signup',
                 element:<SignUp/>
             },
+        ]
+    },
+    {
+        path:'/dashboard',
+        element:<Dashboard/>,
+        children:[
             {
-                path:'/dashboard',
-                element:<Dashboard/>,
-                children:[
-                    {
-                        path:'profile',
-                        element:<MyProfile/>
-                    },
-                    {
-                        path:'bookParcel',
-                        element:<BookParcel/>
-                    },
-                    {
-                        path:'myParcel',
-                        element:<MyParcel/>
-                    },
-                    {
-                        path:'update',
-                        element:<UpdateProfile/>
-                    },
-                    {
-                        path:'updateParcel/:id',
-                        element:<UpdateParcel/>
-                    }
-                ]
+                path:'profile',
+                element:<MyProfile/>
+            },
+            {
+                path:'bookParcel',
+                element:<BookParcel/>
+            },
+            {
+                path:'myParcel',
+                element:<MyParcel/>
+            },
+            {
+                path:'update',
+                element:<UpdateProfile/>
+            },
+            {
+                path:'updateParcel/:id',
+                element:<UpdateParcel/>
+            },
+            {
+                path:'statistics',
+                element:<Statistics/>
+            },
+            {
+                path:'AllUsers',
+                element:<AllUsers/>
+            },
+            {
+                path:'AllParcels',
+                element:<AllParcel/>
+            },
+            {
+                path:'DeliverMan',
+                element:<AllDeliveryMan/>
             }
         ]
     }

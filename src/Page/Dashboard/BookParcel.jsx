@@ -22,7 +22,7 @@ const BookParcel = () => {
     const date = form.date.value;
     const latitude = form.latitude.value;
     const longitude = form.longitude.value;
-    const price = form.price.value;
+    const price = parseInt(form.price.value);
     const status = "pending";
     const allData = {
       name,
