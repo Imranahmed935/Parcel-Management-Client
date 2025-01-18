@@ -19,6 +19,7 @@ import useAuth from "@/Hooks/useAuth";
 const Navbar = () => {
   const [position, setPosition] = useState("bottom");
   const { user, handleLogout } = useAuth();
+  
 
   const handleLogoutForm = () => {
     handleLogout()

@@ -15,6 +15,9 @@ import LogIn from "@/Page/LogIn/LogIn";
 import SignUp from "@/Page/SignUp/SignUp";
 
 import { createBrowserRouter } from "react-router-dom";
+import AdminRoute from "./AdminRoute";
+import MyDeliveryList from "@/DeliveryManDashboard/MyDeliveryList";
+import MyReviews from "@/DeliveryManDashboard/MyReviews";
 
  const router = createBrowserRouter([
     {
@@ -66,15 +69,24 @@ import { createBrowserRouter } from "react-router-dom";
             },
             {
                 path:'AllUsers',
-                element:<AllUsers/>
+                element:<AdminRoute><AllUsers/></AdminRoute>
             },
             {
                 path:'AllParcels',
-                element:<AllParcel/>
+                element:<AdminRoute><AllParcel/></AdminRoute>
             },
             {
                 path:'DeliverMan',
-                element:<AllDeliveryMan/>
+                element:<AdminRoute><AllDeliveryMan/></AdminRoute>
+            },
+            {
+                path:'myDeliveryList',
+                element:<MyDeliveryList/>,
+    
+            },
+            {
+                path:'reviews',
+                element:<MyReviews/>
             }
         ]
     }

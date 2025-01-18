@@ -25,6 +25,7 @@ const AllParcel = () => {
   const [selectedParcel, setSelectedParcel] = useState(null);
   const [deliveryman, setDeliveryman] = useState("");
   const [deliveryDate, setDeliveryDate] = useState("");
+  const [deliveryEmail, setDeliveryEmail] = useState("");
 
   const openDialog = (parcel) => {
     setSelectedParcel(parcel);
@@ -36,30 +37,39 @@ const AllParcel = () => {
     setSelectedParcel(null);
     setDeliveryman("");
     setDeliveryDate("");
+    setDeliveryEmail("");
   };
 
   const handleAssign = async () => {
     if (!deliveryman || !deliveryDate) {
-      toast.error('Please select a deliveryman and date.');
+      toast.error("Please select a deliveryman and date.");
       return;
     }
-  
+
     try {
       await axiosSecure.post(`parcels/${selectedParcel._id}`, {
-        selected:selectedParcel,
-        deliveryManId: deliveryman, 
+        selected: selectedParcel,
+        deliveryManId: deliveryman,
+        deliveryManEmail: deliveryEmail,
         deliveryDate,
       });
-      toast.success('Parcel successfully assigned!');
+      toast.success("Parcel successfully assigned!");
       closeDialog();
       refetch();
     } catch (error) {
-      toast.error('Failed to assign parcel. Please try again.');
+      toast.error("Failed to assign parcel. Please try again.");
     }
-    await axiosSecure.patch(`/users/status/${selectedParcel._id}`,)
-    refetch()
+
+    await axiosSecure.patch(`/users/status/${selectedParcel._id}`);
+    refetch();
   };
-  
+
+  const handleDeliverymanChange = (e) => {
+    const selectedId = e.target.value;
+    const selectedMan = deliveryMen.find((man) => man._id === selectedId);
+    setDeliveryman(selectedId);
+    setDeliveryEmail(selectedMan?.email || "");
+  };
 
   return (
     <div>
@@ -71,27 +81,13 @@ const AllParcel = () => {
           <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
             <thead>
               <tr className="bg-gray-100 text-gray-700">
-                <th className="px-4 py-2 text-left text-sm font-medium">
-                  User Name
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
-                  Phone
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
-                  Booking Date
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
-                  Requested Delivery
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
-                  Cost
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
-                  Status
-                </th>
-                <th className="px-4 py-2 text-center text-sm font-medium">
-                  Manage
-                </th>
+                <th className="px-4 py-2 text-left text-sm font-medium">User Name</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Phone</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Booking Date</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Requested Delivery</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Cost</th>
+                <th className="px-4 py-2 text-left text-sm font-medium">Status</th>
+                <th className="px-4 py-2 text-center text-sm font-medium">Manage</th>
               </tr>
             </thead>
             <tbody>
@@ -102,21 +98,11 @@ const AllParcel = () => {
                     index % 2 === 0 ? "bg-gray-50" : "bg-white"
                   } hover:bg-gray-100 transition duration-200`}
                 >
-                  <td className="px-4 py-2 text-sm text-gray-700">
-                    {parcel.name}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
-                    {parcel.number}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
-                    {parcel.date}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
-                    {parcel.date}
-                  </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
-                    {parcel.price}
-                  </td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{parcel.name}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{parcel.number}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{parcel.date}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{parcel.date}</td>
+                  <td className="px-4 py-2 text-sm text-gray-700">{parcel.price}</td>
                   <td className="px-4 py-2 text-sm text-gray-700">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -169,7 +155,7 @@ const AllParcel = () => {
                 <select
                   className="w-full border border-gray-300 rounded-lg p-2 mt-1"
                   value={deliveryman}
-                  onChange={(e) => setDeliveryman(e.target.value)}
+                  onChange={handleDeliverymanChange}
                 >
                   <option value="">Select</option>
                   {deliveryMen.map((man) => (
