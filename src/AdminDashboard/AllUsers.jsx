@@ -8,7 +8,6 @@ const AllUsers = () => {
     queryKey: ["allUsers"],
     queryFn: async () => {
       const res = await axiosSecure.get("/users/user");
-      console.log(res.data);
       return res.data;
     },
   });
@@ -16,6 +15,12 @@ const AllUsers = () => {
   if (isLoading) {
     return <div className="text-center text-gray-500 py-10">Loading...</div>;
   }
+
+  const handleMakeDeliveryMan = (id)=>{
+    
+
+  }
+
 
   return (
     <div className="container mx-auto p-6">
