@@ -1,10 +1,11 @@
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: users = [], isLoading } = useQuery({
+  const { data: users = [], isLoading, refetch } = useQuery({
     queryKey: ["allUsers"],
     queryFn: async () => {
       const res = await axiosSecure.get("/users/user");
@@ -16,11 +17,56 @@ const AllUsers = () => {
     return <div className="text-center text-gray-500 py-10">Loading...</div>;
   }
 
-  const handleMakeDeliveryMan = (id)=>{
-    
+  const handleMakeDeliveryMan = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to make Delivery man",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/users/user/${id}`).then((res) => {
+          if (res.data.modifiedCount > 0) {
+            refetch()
+            Swal.fire({
+              title: "success!",
+              text: "You have been successfully made delivery man.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    });
+  };
+
+  const handleMakeAdmin =(id)=>{
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to make admin",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/users/admin/${id}`).then((res) => {
+          if (res.data.modifiedCount > 0) {
+            refetch()
+            Swal.fire({
+              title: "success!",
+              text: "You have been successfully made Admin.",
+              icon: "success",
+            });
+          }
+        });
+      }
+    })
 
   }
-
 
   return (
     <div className="container mx-auto p-6">
@@ -32,10 +78,18 @@ const AllUsers = () => {
           <thead>
             <tr className="bg-gray-100 text-gray-700">
               <th className="px-4 py-2 text-left text-sm font-medium">Name</th>
-              <th className="px-4 py-2 text-left text-sm font-medium">Phone Number</th>
-              <th className="px-4 py-2 text-center text-sm font-medium">Parcels Booked</th>
-              <th className="px-4 py-2 text-center text-sm font-medium">Total Spent</th>
-              <th className="px-4 py-2 text-center text-sm font-medium">Actions</th>
+              <th className="px-4 py-2 text-left text-sm font-medium">
+                Phone Number
+              </th>
+              <th className="px-4 py-2 text-center text-sm font-medium">
+                Parcels Booked
+              </th>
+              <th className="px-4 py-2 text-center text-sm font-medium">
+                Total Spent
+              </th>
+              <th className="px-4 py-2 text-center text-sm font-medium">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>

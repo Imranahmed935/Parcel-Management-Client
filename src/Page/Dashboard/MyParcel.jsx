@@ -43,7 +43,7 @@ const MyParcel = () => {
           </thead>
           <tbody>
             {parcels.map((parcel, index) => (
-              <tr key={parcel.id} className="hover:bg-gray-100">
+              <tr key={parcel._id} className="hover:bg-gray-100">
                 <td className="px-4 py-2 border border-gray-300 text-center">{index + 1}</td>
                 <td className="px-4 py-2 border border-gray-300">{parcel.type}</td>
                 <td className="px-4 py-2 border border-gray-300">{parcel.date}</td>
