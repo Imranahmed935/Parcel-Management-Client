@@ -30,7 +30,7 @@ const MyProfile = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="loader border-t-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
+        <div className="loader border-t-4 border-indigo-600 rounded-full w-12 h-12 animate-spin"></div>
       </div>
     );
   }
@@ -58,8 +58,9 @@ const MyProfile = () => {
 
       if (res.data.success) {
         const imageUrl = res.data.data.display_url;
-
-        const updateRes = await axiosPublic.put(`/users/${user.email}`, { image: imageUrl });
+        const updateRes = await axiosPublic.put(`/users/${user.email}`, {
+          image: imageUrl,
+        });
 
         if (updateRes.data.success) {
           console.log("Profile image updated successfully");
@@ -67,33 +68,37 @@ const MyProfile = () => {
           console.error("Error updating profile image:", updateRes.data.error);
         }
       } else {
-        console.error("Error uploading image to imgBB:", res.data.error.message);
+        console.error(
+          "Error uploading image to imgBB:",
+          res.data.error.message
+        );
       }
     } catch (error) {
-      console.error("Error uploading image:", error.response?.data || error.message);
+      console.error(
+        "Error uploading image:",
+        error.response?.data || error.message
+      );
     }
-   
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-indigo-500">My Profile</h1>
-      <div className="flex justify-center items-center mt-10 ">
-      
-      <div className="w-full max-w-xl bg-white  rounded p-8 border border-gray-200">
-       
-        <div className="flex flex-col items-center">
-          <div className="relative w-36 h-36">
+    <div className="min-h-screen bg-gray-50 py-16 px-8 sm:px-12">
+      <h1 className="text-2xl font-extrabold text-gray-600 mb-12">
+        My Profile
+      </h1>
+      <div className="lg:max-w-4xl bg-white rounded p-8 grid grid-cols-1 lg:grid-cols-2">
+        <div className="flex justify-center items-center">
+          <div className="relative w-48 h-48">
             <img
               src={profile?.photo || "/default-avatar.png"}
               alt="Profile"
-              className="w-full h-full rounded-full object-cover border-4 border-indigo-500 shadow-md"
+              className="w-full h-full rounded-full object-cover border-4 border-indigo-600"
             />
             <label
               htmlFor="profileUpload"
-              className="absolute bottom-0 right-0 bg-indigo-500 text-white p-3 rounded-full shadow-lg cursor-pointer hover:bg-indigo-600 transition-all"
+              className="absolute bottom-0 right-0 bg-indigo-600 text-white p-3 rounded-full cursor-pointer"
             >
-              <FaCamera size={18} />
+              <FaCamera size={24} />
             </label>
             <input
               type="file"
@@ -103,35 +108,46 @@ const MyProfile = () => {
               onChange={handleImage}
             />
           </div>
-          <h1 className="mt-4 text-2xl font-bold text-gray-800">{profile?.name || "User Name"}</h1>
-          <p className="text-gray-500">{profile?.email || "user@example.com"}</p>
         </div>
 
-    
-        <div className="mt-8 space-y-4">
-          <div className="flex items-center justify-between bg-gray-100 rounded-md p-4 shadow-sm">
-            <span className="font-semibold text-gray-700">Name:</span>
-            <span className="text-gray-600">{profile?.name || "User"}</span>
+        <div className="space-y-6">
+          <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+            <h2 className="text-2xl font-semibold text-gray-800">
+              Personal Info
+            </h2>
+            <div className="mt-4 space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="font-semibold text-gray-700">Name:</span>
+                <span className="text-gray-600">{profile?.name || "User"}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-semibold text-gray-700">Email:</span>
+                <span className="text-gray-600">
+                  {profile?.email || "user@example.com"}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-semibold text-gray-700">Phone:</span>
+                <span className="text-gray-600">
+                  {profile?.phone || "Not Available"}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-semibold text-gray-700">Role:</span>
+                <span className="text-gray-600">{profile?.role || "User"}</span>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-between bg-gray-100 rounded-md p-4 shadow-sm">
-            <span className="font-semibold text-gray-700">Email:</span>
-            <span className="text-gray-600">{profile?.email || "user@example.com"}</span>
-          </div>
-          <div className="flex items-center justify-between bg-gray-100 rounded-md p-4 shadow-sm">
-            <span className="font-semibold text-gray-700">Role:</span>
-            <span className="text-gray-600">{profile?.role || "User"}</span>
-          </div>
-        </div>
 
-    
-        <div className="mt-8">
-          <Link to={'/dashboard/update'}>
-          <button className="w-full px-6 py-3 bg-indigo-500 text-white font-semibold rounded-md shadow-lg hover:bg-indigo-600 transition-all">
-            Update Profile
-          </button></Link>
+          <div className="mt-6">
+            <Link to="/dashboard/update">
+              <button className="w-full py-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition-all">
+                Update Profile
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

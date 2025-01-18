@@ -5,10 +5,14 @@ import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: users = [], isLoading, refetch } = useQuery({
+  const {
+    data: users = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["allUsers"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users/user");
+      const res = await axiosSecure.get("/users");
       return res.data;
     },
   });
@@ -30,7 +34,7 @@ const AllUsers = () => {
       if (result.isConfirmed) {
         axiosSecure.patch(`/users/user/${id}`).then((res) => {
           if (res.data.modifiedCount > 0) {
-            refetch()
+            refetch();
             Swal.fire({
               title: "success!",
               text: "You have been successfully made delivery man.",
@@ -42,7 +46,7 @@ const AllUsers = () => {
     });
   };
 
-  const handleMakeAdmin =(id)=>{
+  const handleMakeAdmin = (id) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You want to make admin",
@@ -55,7 +59,7 @@ const AllUsers = () => {
       if (result.isConfirmed) {
         axiosSecure.patch(`/users/admin/${id}`).then((res) => {
           if (res.data.modifiedCount > 0) {
-            refetch()
+            refetch();
             Swal.fire({
               title: "success!",
               text: "You have been successfully made Admin.",
@@ -64,9 +68,8 @@ const AllUsers = () => {
           }
         });
       }
-    })
-
-  }
+    });
+  };
 
   return (
     <div className="container mx-auto p-6">
@@ -86,6 +89,9 @@ const AllUsers = () => {
               </th>
               <th className="px-4 py-2 text-center text-sm font-medium">
                 Total Spent
+              </th>
+              <th className="px-4 py-2 text-center text-sm font-medium">
+                role
               </th>
               <th className="px-4 py-2 text-center text-sm font-medium">
                 Actions
@@ -112,6 +118,20 @@ const AllUsers = () => {
                 <td className="px-4 py-2 text-center text-sm text-gray-700">
                   ${user.totalSpent?.toFixed(2) || "0.00"}
                 </td>
+                <td
+                  className={`px-4 py-2 text-center text-sm text-gray-700 ${
+                    user.role === "deliveryMan"
+                      ? "bg-indigo-500 text-white"
+                      : user.role === "admin"
+                      ? "bg-green-500 text-white"
+                      : user.role === "user"
+                      ? "bg-gray-500 text-white"
+                      : ""
+                  }`}
+                >
+                  {user.role || "N/A"}
+                </td>
+
                 <td className="px-4 py-2 text-center">
                   <div className="flex gap-2 justify-center">
                     <button
