@@ -1,8 +1,9 @@
+import useAdmin from "@/Hooks/useAdmin";
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
 
 const Dashboard = () => {
-  const isAdmin = true;
+  const [isAdmin] = useAdmin();
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="bg-gray-800 text-white flex flex-col items-center py-8 w-full md:w-1/5">
