@@ -1,7 +1,6 @@
 import useAuth from "@/Hooks/useAuth";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 
 const MyDeliveryList = () => {

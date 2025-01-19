@@ -15,19 +15,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useAuth from "@/Hooks/useAuth";
+import useRole from "@/Hooks/useRole";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const [position, setPosition] = useState("bottom");
   const { user, handleLogout } = useAuth();
+  const [role] = useRole();
   
 
   const handleLogoutForm = () => {
     handleLogout()
       .then(() => {
-        console.log("successfully logout");
+        toast.success("successfully logout");
       })
       .catch((err) => {
-        console.log(err);
+        toast.error(err);
       });
   };
 
@@ -50,7 +53,7 @@ const Navbar = () => {
           Home
         </NavLink>
 
-        <NavLink to="/notifications" className="text-lg">
+        <NavLink  className="text-lg">
           <MdNotifications className="text-2xl text-gray-700 hover:text-blue-500" />
         </NavLink>
 
@@ -76,9 +79,9 @@ const Navbar = () => {
                     {user?.displayName}
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="bottom">
-                    <NavLink to={'/dashboard'}>
-                          Dashboard
-                    </NavLink>
+                    {role === 'admin' && <NavLink to={'/dashboard/statistics'}> Dashboard </NavLink>}
+                    {role === 'deliveryMan' && <NavLink to={'/dashboard/myDeliveryList'}> Dashboard </NavLink>}
+                    {role === 'user' && <NavLink to={'/dashboard/profile'}> Dashboard </NavLink>}
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="right">
                     <Button onClick={handleLogoutForm}>LogOut</Button>

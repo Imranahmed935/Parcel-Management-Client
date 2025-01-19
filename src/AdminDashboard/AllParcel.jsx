@@ -106,9 +106,9 @@ const AllParcel = () => {
                   <td className="px-4 py-2 text-sm text-gray-700">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        parcel.status === "pending"
-                          ? "bg-red-600 text-white"
-                          : "bg-green-100 text-green-600"
+  
+                        parcel.status === "pending" ? "bg-red-600 text-white":"bg-green-100 text-green-600",
+                        parcel.status === "Cancelled" ? "bg-red-100 text-red-700":"bg-green-100 text-green-600"
                       }`}
                     >
                       {parcel.status}
