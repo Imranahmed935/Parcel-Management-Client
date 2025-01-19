@@ -1,23 +1,40 @@
+
 import useAuth from '@/Hooks/useAuth';
 import useAxiosSecure from '@/Hooks/useAxiosSecure';
+
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import * as React from "react"
+ 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { useState } from 'react';
 
 const MyParcel = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const [filter, setFilter]= useState('')
+
 
   const { data: parcels = [], isLoading, isError, error } = useQuery({
-    queryKey: ['allParcel'],
+    queryKey: ['allParcel',filter, user?.email],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/bookParcel/${user.email}`);
+      const res = await axiosSecure.get(`/bookParcel/${user.email}?filter=${filter}`);
       return res.data;
     },
   });
-
-  if (isLoading) {
-    return <p className="text-center text-xl font-semibold">Loading...</p>;
-  }
+ 
+  if(isLoading) {
+    <p className="text-center text-xl font-semibold">Loading...</p>
+  } 
+    
 
   if (isError) {
     return <p className="text-center text-red-500 font-semibold">Error: {error.message}</p>;
@@ -25,8 +42,26 @@ const MyParcel = () => {
 
   return (
     <div className="container mx-auto">
+      <div className='flex justify-between'>
       <h1 className="text-2xl font-bold text-indigo-500 mb-6">My Parcels</h1>
-
+      
+      <div>
+      <Select onValueChange={(value)=>setFilter(value)}>
+        <SelectTrigger  className="w-[180px] border border-gray-400">
+          <SelectValue  placeholder="filter by status" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>filter by status</SelectLabel>
+            <SelectItem value="delivered">delivered</SelectItem>
+            <SelectItem value="Cancelled">Cancelled</SelectItem>
+            <SelectItem value="pending">pending</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      </div>
+      </div>
+      
       <div className="overflow-x-auto">
         <table className="table-auto w-full text-left border-collapse border border-gray-300">
           <thead>
