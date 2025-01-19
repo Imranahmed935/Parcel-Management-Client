@@ -69,7 +69,7 @@ import MyReviews from "@/DeliveryManDashboard/MyReviews";
             },
             {
                 path:'AllUsers',
-                element:<AdminRoute><AllUsers/></AdminRoute>
+                element:<AdminRoute><AllUsers/></AdminRoute>     
             },
             {
                 path:'AllParcels',

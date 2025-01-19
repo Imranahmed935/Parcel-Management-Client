@@ -1,21 +1,38 @@
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 5;
+
   const {
     data: users = [],
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["allUsers"],
+    queryKey: ["allUsers", currentPage],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users");
+      const res = await axiosSecure.get(
+        `/users?currentPage=${currentPage}&itemsParPage=${itemsPerPage}`
+      );
       return res.data;
     },
   });
+
+  const { data: totalCount = 0 } = useQuery({
+    queryKey: ["count"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/allUsers");
+      return res.data.count;
+    },
+  });
+
+  const numberOfPages = Math.ceil(totalCount / itemsPerPage);
+  const pages = [...Array(numberOfPages).keys()];
+  console.log(pages);
 
   if (isLoading) {
     return <div className="text-center text-gray-500 py-10">Loading...</div>;
@@ -73,7 +90,7 @@ const AllUsers = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6 text-center">
+      <h1 className="text-2xl font-semibold text-gray-800 mb-6">
         All Users ({users.length})
       </h1>
       <div className="overflow-x-auto">
@@ -159,6 +176,24 @@ const AllUsers = () => {
             )}
           </tbody>
         </table>
+      </div>
+      <div className="flex justify-center items-center mt-6 space-x-2">
+        {pages.map((page) => (
+          <button
+            key={page}
+            className={`px-4 py-2 rounded-md border text-sm font-medium 
+              hover:bg-indigo-500 hover:text-white transition-colors duration-200 
+              ${
+                page === currentPage
+                  ? "bg-indigo-500 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }
+            `}
+            onClick={() => setCurrentPage(page)}
+          >
+            {page + 1}
+          </button>
+        ))}
       </div>
     </div>
   );
