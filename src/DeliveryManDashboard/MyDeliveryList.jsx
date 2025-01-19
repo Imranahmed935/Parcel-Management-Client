@@ -1,21 +1,56 @@
 import useAuth from "@/Hooks/useAuth";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 
 const MyDeliveryList = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], refetch} = useQuery({
     queryKey: ["assignMan"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/deliverList/${user.email}`);
-      console.log(res.data)
       return res.data;
     },
   });
 
-
+  const handleStatusChange = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to cancel this parcel",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, cancel it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/cancelStatus/${id}`)
+          .then((res) => {
+            if (
+              res.data.assignUpdated.modifiedCount > 0 &&
+              res.data.bookedParcelUpdated.modifiedCount > 0
+            ) {
+              Swal.fire({
+                title: "Cancelled!",
+                text: "The delivery and parcel status have been updated.",
+                icon: "success",
+              });
+              refetch(); 
+            }
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Error!",
+              text: "An error occurred. Please try again.",
+              icon: "error",
+            });
+          });
+      }
+    });
+  };
+  
   return (
     <div className="container mx-auto ">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">My Delivery List</h1>
@@ -80,9 +115,7 @@ const MyDeliveryList = () => {
                 </td>
                 <td className="px-4 py-2 text-center space-x-2">
                   <button
-                    onClick={() =>
-                      window.open(parcel.locationUrl, "_blank")
-                    }
+                    
                     className="bg-blue-500 text-white py-1 px-1 rounded-lg shadow-sm hover:bg-blue-600 transition"
                   >
                     View Location
@@ -94,7 +127,8 @@ const MyDeliveryList = () => {
                     Cancel
                   </button>
                   <button
-                    onClick={() => handleStatusChange(parcel._id, "Delivered")}
+                  
+                    
                     className="bg-green-500 text-white py-1 px-1 rounded-lg shadow-sm hover:bg-green-600 transition"
                   >
                     Deliver
