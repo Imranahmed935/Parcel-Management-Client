@@ -6,9 +6,9 @@ import toast from "react-hot-toast";
 const BookParcel = () => {
   const { user } = useAuth();
   const [price, setPrice] = useState(50);
+  const axiosSecure = useAxiosSecure();
 
   const handleFormValue = async (e) => {
-    const axiosSecure = useAxiosSecure();
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;

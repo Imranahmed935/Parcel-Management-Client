@@ -1,13 +1,13 @@
 import useAuth from "@/Hooks/useAuth";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 import Swal from "sweetalert2";
-
 
 const MyDeliveryList = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const { data: parcels = [], refetch} = useQuery({
+  const { data: parcels = [], refetch } = useQuery({
     queryKey: ["assignMan"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/deliverList/${user.email}`);
@@ -23,10 +23,11 @@ const MyDeliveryList = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, cancel it!"
+      confirmButtonText: "Yes, cancel it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`/cancelStatus/${id}`)
+        axiosSecure
+          .patch(`/cancelStatus/${id}`)
           .then((res) => {
             if (
               res.data.assignUpdated.modifiedCount > 0 &&
@@ -37,7 +38,7 @@ const MyDeliveryList = () => {
                 text: "The delivery and parcel status have been updated.",
                 icon: "success",
               });
-              refetch(); 
+              refetch();
             }
           })
           .catch(() => {
@@ -50,10 +51,38 @@ const MyDeliveryList = () => {
       }
     });
   };
-  
+
+  const handleDeliverStatus = (id, parcel) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to Deliver",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "deliver it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.patch(`/deliverStatus/${id}`);
+        if (res.data.modifiedCount > 0 && res.data.modifiedCount > 0) {
+          Swal.fire({
+            title: "Delivered!",
+            text: "Your have been delivered successfully.",
+            icon: "success",
+          });
+          refetch();
+        }
+      }
+    });
+
+    axiosSecure.post(`/deliveredCount`, parcel) 
+  };
+
   return (
     <div className="container mx-auto ">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">My Delivery List</h1>
+      <h1 className="text-2xl font-bold text-gray-800 mb-6">
+        My Delivery List
+      </h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
           <thead>
@@ -114,34 +143,42 @@ const MyDeliveryList = () => {
                   {parcel.selected.address}
                 </td>
                 <td className="px-4 py-2 text-center space-x-2">
-                  <button
-                    
-                    className="bg-blue-500 text-white py-1 px-1 rounded-lg shadow-sm hover:bg-blue-600 transition"
-                  >
+                  <button className="bg-blue-500 text-white py-1 px-1 rounded-lg shadow-sm hover:bg-blue-600 transition">
                     View Location
                   </button>
-                  <button
-                    onClick={() => handleStatusChange(parcel._id, "Cancelled")}
-                    className="bg-red-500 text-white px-1 py-1 rounded-lg shadow-sm hover:bg-red-600 transition"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                  
-                    
-                    className="bg-green-500 text-white py-1 px-1 rounded-lg shadow-sm hover:bg-green-600 transition"
-                  >
-                    Deliver
-                  </button>
+
+                  {parcel.selected.status === "Cancelled" ? (
+                    <span className="text-red-500 font-semibold">
+                      Cancelled
+                    </span>
+                  ) : parcel.selected.status === "delivered" ? (
+                    <span className="text-green-500 font-semibold">
+                      Delivered
+                    </span>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() =>
+                          handleStatusChange(parcel._id, "Cancelled")
+                        }
+                        className="bg-red-500 text-white px-2 py-1 rounded-lg shadow-sm hover:bg-red-600 transition"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => handleDeliverStatus(parcel._id, parcel)}
+                        className="bg-green-500 text-white py-1 px-1 rounded-lg shadow-sm hover:bg-green-600 transition"
+                      >
+                        Deliver
+                      </button>
+                    </>
+                  )}
                 </td>
               </tr>
             ))}
             {parcels.length === 0 && (
               <tr>
-                <td
-                  colSpan="8"
-                  className="text-center text-gray-500 py-4"
-                >
+                <td colSpan="8" className="text-center text-gray-500 py-4">
                   No parcels found.
                 </td>
               </tr>
