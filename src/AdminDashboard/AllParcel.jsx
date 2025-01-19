@@ -1,14 +1,17 @@
+
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 const AllParcel = () => {
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const axiosSecure = useAxiosSecure();
   const { data: parcels = [], refetch } = useQuery({
     queryKey: ["parcels"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/allParcels");
+      const res = await axiosSecure.get(`/allParcels?startDate=${startDate}&endDate=${endDate}`);
       return res.data;
     },
   });
@@ -74,9 +77,18 @@ const AllParcel = () => {
   return (
     <div>
       <div className="container mx-auto p-4">
+        <div className="flex justify-between">
         <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-          Booked Parcels
+          All Parcels
         </h1>
+        <div className="flex gap-10 items-center">
+          <span>Search by date:</span>
+        <div className="flex gap-2">
+        <input onChange={(e)=>setStartDate(e.target.value)} className="border border-gray-600 p-2 rounded " type="date" />
+        <input onChange={(e)=>setEndDate(e.target.value)} className="border border-gray-600 p-2 rounded " type="date" />
+        </div>
+        </div>
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
             <thead>
