@@ -122,9 +122,11 @@ const MyParcel = () => {
 
             
                   {parcel.status === 'pending' && (
+                    <Link to={`/dashboard/payment/${parcel._id}`}>
                     <button className="px-3 py-1 bg-teal-500 text-white rounded hover:bg-teal-600">
                       Pay
                     </button>
+                    </Link>
                   )}
                 </td>
               </tr>

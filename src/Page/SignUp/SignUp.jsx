@@ -1,10 +1,10 @@
+import SocialLogin from "@/AllComponents/SocialLogin/SocialLogin";
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import SocialLogin from "@/AllComponents/SocialLogin/SocialLogin";
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const { handleSignUp, handleUpdateProfile } = useAuth();
@@ -24,12 +24,23 @@ const SignUp = () => {
     setError("");
     try {
       const result = await handleSignUp(data.email, data.password);
-      const user = { name: data.username, phone:data.mobile, photo:data.photo, email: data.email, role: data.role };
+      let user = {
+        name: data.username,
+        phone: data.mobile,
+        photo: data.photo,
+        email: data.email,
+        role: data.role,
+      };
+
+     
+      if (data.role === "deliveryMan") {
+        user.count = 0;
+      }
 
       const response = await axiosPublic.post("/users", user);
 
       if (response.data.insertedId) {
-        toast.success("user created successfully.");
+        toast.success("User created successfully.");
 
         await handleUpdateProfile(data.username, data.photo);
         reset();
@@ -51,7 +62,7 @@ const SignUp = () => {
         {error && (
           <p className="text-sm text-red-500 text-center mb-4">{error}</p>
         )}
-       
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mb-4">
           <div>
             <label
@@ -75,7 +86,7 @@ const SignUp = () => {
           </div>
           <div>
             <label
-              htmlFor="username"
+              htmlFor="mobile"
               className="block text-sm font-medium text-gray-600"
             >
               Mobile No
@@ -89,7 +100,7 @@ const SignUp = () => {
             />
             {errors.mobile && (
               <span className="text-sm text-red-500">
-                mobile is required.
+                Mobile is required.
               </span>
             )}
           </div>
@@ -211,9 +222,8 @@ const SignUp = () => {
               </Link>
             </p>
           </div>
-         
         </form>
-        <SocialLogin/>
+        <SocialLogin />
       </div>
     </div>
   );

@@ -9,7 +9,7 @@ const AllParcel = () => {
   const [endDate, setEndDate] = useState('');
   const axiosSecure = useAxiosSecure();
   const { data: parcels = [], refetch } = useQuery({
-    queryKey: ["parcels"],
+    queryKey: ["parcels",startDate, endDate],
     queryFn: async () => {
       const res = await axiosSecure.get(`/allParcels?startDate=${startDate}&endDate=${endDate}`);
       return res.data;
@@ -19,7 +19,8 @@ const AllParcel = () => {
   const { data: deliveryMen = [] } = useQuery({
     queryKey: ["deliveryman"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/users/deliveryMan");
+      const res = await axiosSecure.get("/delivery/deliveryMan");
+      console.log(res)
       return res.data;
     },
   });

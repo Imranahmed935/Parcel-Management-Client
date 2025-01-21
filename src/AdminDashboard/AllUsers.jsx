@@ -1,10 +1,13 @@
+import useAuth from "@/Hooks/useAuth";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 
 const AllUsers = () => {
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 5;
 
@@ -16,7 +19,7 @@ const AllUsers = () => {
     queryKey: ["allUsers", currentPage],
     queryFn: async () => {
       const res = await axiosSecure.get(
-        `/users?currentPage=${currentPage}&itemsParPage=${itemsPerPage}`
+        `/users/${user?.email}?currentPage=${currentPage}&itemsParPage=${itemsPerPage}`
       );
       return res.data;
     },
@@ -32,7 +35,6 @@ const AllUsers = () => {
 
   const numberOfPages = Math.ceil(totalCount / itemsPerPage);
   const pages = [...Array(numberOfPages).keys()];
-  console.log(pages);
 
   if (isLoading) {
     return <div className="text-center text-gray-500 py-10">Loading...</div>;
@@ -98,52 +100,28 @@ const AllUsers = () => {
           <thead>
             <tr className="bg-gray-100 text-gray-700">
               <th className="px-4 py-2 text-left text-sm font-medium">Name</th>
-              <th className="px-4 py-2 text-left text-sm font-medium">
-                Phone Number
-              </th>
-              <th className="px-4 py-2 text-center text-sm font-medium">
-                Parcels Booked
-              </th>
-              <th className="px-4 py-2 text-center text-sm font-medium">
-                Total Spent
-              </th>
-              <th className="px-4 py-2 text-center text-sm font-medium">
-                role
-              </th>
-              <th className="px-4 py-2 text-center text-sm font-medium">
-                Actions
-              </th>
+              <th className="px-4 py-2 text-left text-sm font-medium">Phone Number</th>
+              <th className="px-4 py-2 text-center text-sm font-medium">Parcels Booked</th>
+              <th className="px-4 py-2 text-center text-sm font-medium">Total Spent</th>
+              <th className="px-4 py-2 text-center text-sm font-medium">Role</th>
+              <th className="px-4 py-2 text-center text-sm font-medium">Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => (
               <tr
                 key={user._id}
-                className={`${
-                  index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                } hover:bg-gray-100 transition duration-200`}
+                className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100 transition duration-200`}
               >
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {user.name || "N/A"}
-                </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
-                  {user.phone || "N/A"}
-                </td>
-                <td className="px-4 py-2 text-center text-sm text-gray-700">
-                  {user.parcelsBooked || 0}
-                </td>
-                <td className="px-4 py-2 text-center text-sm text-gray-700">
-                  ${user.totalSpent?.toFixed(2) || "0.00"}
-                </td>
+                <td className="px-4 py-2 text-sm text-gray-700">{user.name || "N/A"}</td>
+                <td className="px-4 py-2 text-sm text-gray-700">{user.phone || "N/A"}</td>
+                <td className="px-4 py-2 text-center text-sm text-gray-700">{user.parcelsBooked || 0}</td>
+                <td className="px-4 py-2 text-center text-sm text-gray-700">${user.totalSpent?.toFixed(2) || "0.00"}</td>
                 <td
                   className={`px-4 py-2 text-center text-sm text-gray-700 ${
-                    user.role === "deliveryMan"
-                      ? "bg-indigo-500 text-white"
-                      : user.role === "admin"
-                      ? "bg-green-500 text-white"
-                      : user.role === "user"
-                      ? "bg-gray-500 text-white"
-                      : ""
+                    user.role === "deliveryMan" ? "bg-indigo-500 text-white" :
+                    user.role === "admin" ? "bg-green-500 text-white" :
+                    user.role === "user" ? "bg-gray-500 text-white" : ""
                   }`}
                 >
                   {user.role || "N/A"}
@@ -152,10 +130,13 @@ const AllUsers = () => {
                 <td className="px-4 py-2 text-center">
                   <div className="flex gap-2 justify-center">
                     <button
-                      className="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-lg hover:bg-blue-600 shadow-sm"
+                      disabled={user.role === "deliveryMan"}
+                      className={`px-4 py-2 text-sm font-medium text-white rounded-lg shadow-sm ${
+                        user.role === "deliveryMan" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+                      }`}
                       onClick={() => handleMakeDeliveryMan(user._id)}
                     >
-                      Make Delivery Man
+                      {user.role === "deliveryMan" ? "Already Delivery Man" : "Make Delivery Man"}
                     </button>
                     <button
                       className="px-4 py-2 text-sm font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 shadow-sm"
@@ -169,7 +150,7 @@ const AllUsers = () => {
             ))}
             {users.length === 0 && (
               <tr>
-                <td colSpan="5" className="text-center text-gray-500 py-6">
+                <td colSpan="6" className="text-center text-gray-500 py-6">
                   No users found.
                 </td>
               </tr>
@@ -177,18 +158,14 @@ const AllUsers = () => {
           </tbody>
         </table>
       </div>
+
       <div className="flex justify-center items-center mt-6 space-x-2">
         {pages.map((page) => (
           <button
             key={page}
             className={`px-4 py-2 rounded-md border text-sm font-medium 
               hover:bg-indigo-500 hover:text-white transition-colors duration-200 
-              ${
-                page === currentPage
-                  ? "bg-indigo-500 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }
-            `}
+              ${page === currentPage ? "bg-indigo-500 text-white" : "bg-gray-200 text-gray-800"}`}
             onClick={() => setCurrentPage(page)}
           >
             {page + 1}

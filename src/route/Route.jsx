@@ -18,6 +18,7 @@ import { createBrowserRouter } from "react-router-dom";
 import AdminRoute from "./AdminRoute";
 import MyDeliveryList from "@/DeliveryManDashboard/MyDeliveryList";
 import MyReviews from "@/DeliveryManDashboard/MyReviews";
+import Payment from "@/Page/Payment/Payment";
 
  const router = createBrowserRouter([
     {
@@ -87,6 +88,10 @@ import MyReviews from "@/DeliveryManDashboard/MyReviews";
             {
                 path:'reviews',
                 element:<MyReviews/>
+            },
+            {
+                path:'payment/:id',
+                element:<Payment/>
             }
         ]
     }

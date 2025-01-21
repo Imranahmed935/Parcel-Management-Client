@@ -51,7 +51,7 @@ const MyDeliveryList = () => {
     });
   };
 
-  const handleDeliverStatus = (id, parcel) => {
+  const handleDeliverStatus = async (id, parcel) => {
     Swal.fire({
       title: "Are you sure?",
       text: "You want to Deliver",
@@ -59,23 +59,39 @@ const MyDeliveryList = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "deliver it!",
-    }).then((result) => {
+      confirmButtonText: "Yes, deliver it!",
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`/deliverStatus/${id}`);
-        if (res.data.modifiedCount > 0 && res.data.modifiedCount > 0) {
+        try {
+          const res = await axiosSecure.patch(`/deliverStatus/${id}`);
+  
+          if (
+            res?.data.result?.modifiedCount > 0 &&
+            res?.data.delivered?.modifiedCount > 0
+          ) {
+            Swal.fire({
+              title: "Delivered!",
+              text: "The parcel has been successfully delivered.",
+              icon: "success",
+            });
+            refetch(); 
+          }
+  
+          await axiosSecure.post(`/deliveredCount`, parcel);
+          await axiosSecure.patch(`/users/count/${user?.email}`)
+        }
+         catch (error) {
           Swal.fire({
-            title: "Delivered!",
-            text: "Your have been delivered successfully.",
-            icon: "success",
+            title: "Error!",
+            text: "An error occurred while updating the status.",
+            icon: "error",
           });
-          refetch();
+          console.error("Delivery status update error:", error);
         }
       }
     });
-
-    axiosSecure.post(`/deliveredCount`, parcel) 
   };
+  
 
   return (
     <div className="container mx-auto ">

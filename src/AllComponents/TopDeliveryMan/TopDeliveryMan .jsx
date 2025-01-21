@@ -1,65 +1,58 @@
-import React from 'react';
+import useAxiosSecure from "@/Hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 
 const TopDeliveryMan = () => {
-    const topDeliveryMen = [
-        {
-            name: 'John Doe',
-            image: 'https://via.placeholder.com/150',
-            parcelsDelivered: 120,
-            avgRating: 4.9,
-        },
-        {
-            name: 'Jane Smith',
-            image: 'https://via.placeholder.com/150',
-            parcelsDelivered: 110,
-            avgRating: 4.8,
-        },
-        {
-            name: 'Michael Lee',
-            image: 'https://via.placeholder.com/150',
-            parcelsDelivered: 100,
-            avgRating: 4.7,
-        },
-    ];
+  const axiosSecure = useAxiosSecure();
 
-    return (
-        <div className="bg-gray-100 py-16 px-6">
-            {/* Section Header */}
-            <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold mb-4">Top Delivery Men</h2>
-                <p className="text-gray-600">
-                    Meet our best performers ensuring reliable and swift deliveries.
-                </p>
-            </div>
+  const { data: topCounts = [] } = useQuery({
+    queryKey: ["topMan"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/user/topDeliveryMan/deliveryMan");
+      return res.data;
+    },
+  });
 
-            {/* Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {topDeliveryMen.map((man, index) => (
-                    <div
-                        key={index}
-                        className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center text-center"
-                    >
-                        {/* Image */}
-                        <img
-                            src={man.image}
-                            alt={man.name}
-                            className="w-32 h-32 rounded-full mb-4 border-4 border-red-500"
-                        />
-                        {/* Name */}
-                        <h3 className="text-xl font-bold mb-2">{man.name}</h3>
-                        {/* Parcels Delivered */}
-                        <p className="text-gray-600 mb-2">
-                            Parcels Delivered: <span className="font-semibold">{man.parcelsDelivered}</span>
-                        </p>
-                        {/* Average Rating */}
-                        <p className="text-gray-600">
-                            Average Rating: <span className="font-semibold">{man.avgRating} / 5</span>
-                        </p>
-                    </div>
-                ))}
+  return (
+    <div className=" py-16">
+      <div className="text-center mb-12">
+        <h2 className="lg:text-3xl text-2xl text-gray-500 font-bold mb-4">
+          Top Delivery Men
+        </h2>
+        <p className="text-gray-600">
+          Meet our best performers ensuring reliable and swift deliveries.
+        </p>
+      </div>
+
+      <div className=" lg:w-7/12 mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 ">
+        {topCounts.map((count, index) => (
+          <div
+            key={index}
+            className="bg-white rounded p-6 flex hover:scale-105 duration-500 flex-col items-center text-center"
+          >
+            <img
+              src={count.photo}
+              alt={count.name}
+              className=" h-60 rounded mb-4"
+            />
+            <div className="border-2 border-[#fdc441] rounded-tr-none rounded-3xl p-2">
+              <h3 className="text-xl text-gray-600 font-bold mb-2">{count.name}</h3>
+
+              <p className="text-gray-600 mb-2">
+                Parcels Delivered:{" "}
+                <span className="font-semibold text-2xl">{count.count}</span>
+              </p>
+
+              <p className="text-gray-600">
+                Average Rating:{" "}
+                <span className="font-semibold">{count.avgRating} / 5</span>
+              </p>
             </div>
-        </div>
-    );
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default TopDeliveryMan;
