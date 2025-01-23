@@ -115,8 +115,8 @@ const AllUsers = () => {
               >
                 <td className="px-4 py-2 text-sm text-gray-700">{user.name || "N/A"}</td>
                 <td className="px-4 py-2 text-sm text-gray-700">{user.phone || "N/A"}</td>
-                <td className="px-4 py-2 text-center text-sm text-gray-700">{user.parcelsBooked || 0}</td>
-                <td className="px-4 py-2 text-center text-sm text-gray-700">${user.totalSpent?.toFixed(2) || "0.00"}</td>
+                <td className="px-4 py-2 text-center text-sm text-gray-700">{user.totalBooked || 0}</td>
+                <td className="px-4 py-2 text-center text-sm text-gray-700">${user.totalPrice?.toFixed(2) || "0.00"}</td>
                 <td
                   className={`px-4 py-2 text-center text-sm text-gray-700 ${
                     user.role === "deliveryMan" ? "bg-indigo-500 text-white" :

@@ -46,7 +46,7 @@ const AllDeliveryMan = () => {
                   {man.phone || 'N/A'}
                 </td>
                 <td className="px-4 py-2 text-center text-sm text-gray-700">
-                  {man.parcelsDelivered || 0}
+                  {man.count || 0}
                 </td>
                 <td className="px-4 py-2 text-center text-sm text-gray-700">
                   {man.averageReview?.toFixed(1) || 'N/A'}

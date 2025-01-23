@@ -7,6 +7,7 @@ const BookParcel = () => {
   const { user } = useAuth();
   const [price, setPrice] = useState(50);
   const axiosSecure = useAxiosSecure();
+  
 
   const handleFormValue = async (e) => {
     e.preventDefault();
@@ -18,12 +19,15 @@ const BookParcel = () => {
     const weight = form.weight.value;
     const receiverName = form.receiverName.value;
     const receiverPhone = form.receiverPhone.value;
+    const photo = user.photoURL
     const address = form.address.value;
     const date = form.date.value;
     const latitude = form.latitude.value;
     const longitude = form.longitude.value;
     const price = parseInt(form.price.value);
     const status = "pending";
+    const deliveryManId='N/A'
+    
     const allData = {
       name,
       email,
@@ -38,6 +42,8 @@ const BookParcel = () => {
       longitude,
       price,
       status,
+      photo,
+      deliveryManId
     };
     const res = await axiosSecure.post("/bookParcel", allData);
     if (res.data.insertedId) {

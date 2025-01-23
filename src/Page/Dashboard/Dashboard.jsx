@@ -17,7 +17,7 @@ const Dashboard = () => {
   });
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex flex-col md:flex-row ">
       {/* Sidebar */}
       <div className="bg-gray-800 text-white flex flex-col items-center py-8 w-full md:w-1/5">
         <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
@@ -26,16 +26,16 @@ const Dashboard = () => {
           {data.role === "admin" && (
             <>
               <li className="hover:text-gray-300 cursor-pointer">
-                <NavLink to="Statistics">Statistics</NavLink>
+                <NavLink to="Statistics" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>Statistics</NavLink>
               </li>
               <li className="hover:text-gray-300 cursor-pointer">
-                <NavLink to="AllUsers">All Users</NavLink>
+                <NavLink to="AllUsers" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>All Users</NavLink>
               </li>
               <li className="hover:text-gray-300 cursor-pointer">
-                <NavLink to="AllParcels">All Parcels</NavLink>
+                <NavLink to="AllParcels" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>All Parcels</NavLink>
               </li>
               <li className="hover:text-gray-300 cursor-pointer">
-                <NavLink to="DeliverMan">All Delivery Man</NavLink>
+                <NavLink to="DeliverMan" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>All Delivery Man</NavLink>
               </li>
             </>
           )}
@@ -44,13 +44,13 @@ const Dashboard = () => {
           {data.role === "user" && (
             <>
               <li className="hover:text-gray-300 cursor-pointer">
-                <NavLink to="profile">My Profile</NavLink>
+                <NavLink to="profile" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>My Profile</NavLink>
               </li>
               <li className="hover:text-gray-300 cursor-pointer">
-                <NavLink to="bookParcel">Book A Parcel</NavLink>
+                <NavLink to="bookParcel" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>Book A Parcel</NavLink>
               </li>
               <li className="hover:text-gray-300 cursor-pointer">
-                <NavLink to="myParcel">My Parcel</NavLink>
+                <NavLink to="myParcel" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>My Parcel</NavLink>
               </li>
             </>
           )}
@@ -59,10 +59,10 @@ const Dashboard = () => {
           {data.role === "deliveryMan" && (
             <>
               <li className="hover:text-gray-300 cursor-pointer">
-                <NavLink to="myDeliveryList">My Delivery List</NavLink>
+                <NavLink to="myDeliveryList" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>My Delivery List</NavLink>
               </li>
               <li className="hover:text-gray-300 cursor-pointer">
-                <NavLink to="reviews">My Reviews</NavLink>
+                <NavLink to="reviews" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>My Reviews</NavLink>
               </li>
             </>
           )}
@@ -70,7 +70,7 @@ const Dashboard = () => {
           {/* Common Menu */}
           <hr className="w-full border-t border-gray-300 my-4" />
           <li className="hover:text-gray-300 cursor-pointer">
-            <NavLink to="/">Home</NavLink>
+            <NavLink to="/" >Home</NavLink>
           </li>
         </ul>
       </div>

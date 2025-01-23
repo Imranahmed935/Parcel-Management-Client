@@ -35,7 +35,7 @@ const TopDeliveryMan = () => {
               alt={count.name}
               className=" h-60 rounded mb-4"
             />
-            <div className="border-2 border-[#fdc441] rounded-tr-none rounded-3xl p-2">
+            <div className="border-2 border-[#fdc441] rounded-tr-none rounded-3xl p-6">
               <h3 className="text-xl text-gray-600 font-bold mb-2">{count.name}</h3>
 
               <p className="text-gray-600 mb-2">
