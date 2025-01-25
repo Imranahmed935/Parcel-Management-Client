@@ -13,6 +13,22 @@ const TopDeliveryMan = () => {
     },
   });
 
+  
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 0; i < 5; i++) {
+      stars.push(
+        <span
+          key={i}
+          className={i < rating ? "text-yellow-500" : "text-gray-400"} 
+        >
+          ★
+        </span>
+      );
+    }
+    return stars;
+  };
+
   return (
     <div className=" py-16">
       <div className="text-center mb-12">
@@ -45,7 +61,9 @@ const TopDeliveryMan = () => {
 
               <p className="text-gray-600">
                 Average Rating:{" "}
-                <span className="font-semibold">{count.reviewed}</span>
+                <span className="font-semibold">
+                  {renderStars(count.reviewed)}
+                </span>
               </p>
             </div>
           </div>

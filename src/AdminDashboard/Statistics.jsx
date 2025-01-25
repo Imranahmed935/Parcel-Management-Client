@@ -11,7 +11,7 @@ const Statistics = () => {
         queryKey: ['statistics'],
         queryFn: async () => {
             const res = await axiosSecure.get('/adminStats');
-            console.log(res.data);
+  
             return res.data.bookingsByDate.dates.map((date, index) => ({
                 date,
                 count: res.data.bookingsByDate.counts[index],
@@ -24,8 +24,8 @@ const Statistics = () => {
             {
                 name: 'Bookings',
                 data: bookings.map((item) => ({
-                    x: item.date, // X-axis: Date
-                    y: item.count, // Y-axis: Booking count
+                    x: item.date, 
+                    y: item.count, 
                 })),
             },
         ],
