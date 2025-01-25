@@ -45,7 +45,7 @@ const TopDeliveryMan = () => {
 
               <p className="text-gray-600">
                 Average Rating:{" "}
-                <span className="font-semibold">{count.avgRating} / 5</span>
+                <span className="font-semibold">{count.reviewed}</span>
               </p>
             </div>
           </div>

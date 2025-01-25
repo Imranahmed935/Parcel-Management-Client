@@ -181,7 +181,7 @@ const BookParcel = () => {
           </div>
           <div>
             <label className="block text-lg font-semibold text-gray-700">
-              Delivery Date
+             Requested Date
             </label>
             <input
               type="date"

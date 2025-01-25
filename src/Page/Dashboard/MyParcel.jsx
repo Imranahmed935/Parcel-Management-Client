@@ -31,6 +31,7 @@ const MyParcel = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [filter, setFilter] = useState("");
+ 
   const {
     data: parcels = [],
     isLoading,
@@ -48,25 +49,46 @@ const MyParcel = () => {
   });
 
   const handleReview = (e, id) => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const data = Object.fromEntries(formData);
-
- const ratings = data.ratings;
-  axiosSecure.post('/reviews', data)
-    .then(() => {
-     
-      const userReview = { reviewed: ratings }; 
-      return axiosSecure.put(`/review/man/${id}`, userReview);
-    })
-    .then(() => {
-      toast.success('Review added and user updated successfully');
-    })
-    .catch((error) => {
-      console.error("Error submitting review or updating user:", error);
-      toast.error('Failed to submit review or update user');
-    });
-};
+    e.preventDefault();
+  
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+  
+    const ratings = data.ratings;
+    if (!ratings || isNaN(ratings)) {
+      toast.error('Invalid ratings value');
+      return;
+    }
+  
+    // POST the review data
+    axiosSecure
+      .post('/reviews', data)
+      .then((res) => {
+        if (res.status === 200) {
+          const userReview = { reviewed: parseFloat(ratings) };
+  
+          // Update the user with the new review
+          return axiosSecure.put(`/review/man/${id}`, userReview);
+        } else {
+          throw new Error('Failed to save review');
+        }
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success('Review added and user updated successfully');
+          form.reset();
+        } else {
+          throw new Error('Failed to update user review');
+        }
+      })
+      .catch((error) => {
+        console.error('Error submitting review or updating user:', error);
+        toast.error('Failed to submit review or update user');
+      });
+  };
+  
+  
 
 
   if (isLoading) {
@@ -139,7 +161,7 @@ const MyParcel = () => {
                   {parcel.date}
                 </td>
                 <td className="px-4 py-2 border border-gray-300">
-                  {parcel.approximateDeliveryDate || "Not Set"}
+                  {parcel.deliveryDate || "Not Set"}
                 </td>
                 <td className="px-4 py-2 border border-gray-300">
                   {new Date(parcel.date).toLocaleDateString()}
