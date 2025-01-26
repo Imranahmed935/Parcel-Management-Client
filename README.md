@@ -1,8 +1,61 @@
-# React + Vite
+# SwiftShip - Revolutionizing Delivery Services 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SwiftShip is an advanced delivery management system that simplifies parcel booking, delivery tracking, and user management. Designed for both administrators and end-users, it ensures a seamless and efficient delivery experience.
 
-Currently, two official plugins are available:
+## 🌐 Live Website
+[Visit Live Site](https://your-live-site-url.com)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🔑 Credentials
+### Admin
+- **Username**: admin@example.com
+- **Password**: admin123
+
+### Delivery Man
+- **Username**: deliveryman@example.com
+- **Password**: delivery123
+
+---
+
+## ✨ Features
+
+1. **Role-Based Dashboard**:
+   - Separate dashboards for Admins, Delivery Personnel, and Users.
+
+2. **Statistics Overview**:
+   - Real-time delivery statistics and system usage metrics for admins.
+
+3. **User Management**:
+   - Admins can view, add, and manage all registered users.
+
+4. **Parcel Booking**:
+   - Easy-to-use interface for users to book parcels.
+
+5. **Parcel Tracking**:
+   - Comprehensive tracking system for users to monitor the status of their deliveries.
+
+6. **Delivery Personnel Panel**:
+   - Dedicated dashboard for delivery personnel to view their assigned deliveries and update statuses.
+
+7. **Reviews & Feedback**:
+   - Delivery personnel can add reviews for completed jobs, and users can share feedback.
+
+8. **Mobile-Responsive Design**:
+   - Fully optimized for both desktop and mobile devices.
+
+9. **Secure Authentication**:
+   - Login and role-based access control ensure secure user sessions.
+
+10. **Performance Optimized**:
+    - Leveraging React, Tailwind CSS, and React Query for a fast and seamless user experience.
+
+---
+
+## 🚀 Technologies Used
+- **Frontend**: React, Tailwind CSS
+- **Backend**: Node.js, Express.js
+- **Database**: MongoDB
+- **State Management**: React Query
+- **Animations**: Lottie
+
+
+

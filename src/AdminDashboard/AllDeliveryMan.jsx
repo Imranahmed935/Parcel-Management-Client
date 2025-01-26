@@ -13,7 +13,11 @@ const AllDeliveryMan = () => {
   });
 
   if (isLoading) {
-    return <div className="text-center text-gray-500 py-10">Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <div className="loader border-t-4 border-indigo-600 rounded-full w-12 h-12 animate-spin"></div>
+      </div>
+    );
   }
 
   return (
@@ -49,7 +53,7 @@ const AllDeliveryMan = () => {
                   {man.count || 0}
                 </td>
                 <td className="px-4 py-2 text-center text-sm text-gray-700">
-                  {man.averageReview?.toFixed(1) || 'N/A'}
+                  {man.reviewed?.toFixed(1) || 'N/A'}
                 </td>
               </tr>
             ))}

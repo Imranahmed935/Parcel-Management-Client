@@ -4,13 +4,16 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import register1 from '../../assets/register/register.json'
+import Lottie from "lottie-react";
 
 const SignUp = () => {
   const { handleSignUp, handleUpdateProfile } = useAuth();
   const axiosPublic = useAxiosPublic();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate()
 
   const {
     register,
@@ -32,7 +35,6 @@ const SignUp = () => {
         role: data.role,
       };
 
-     
       if (data.role === "deliveryMan") {
         user.count = 0;
       }
@@ -41,7 +43,7 @@ const SignUp = () => {
 
       if (response.data.insertedId) {
         toast.success("User created successfully.");
-
+        navigate('/')
         await handleUpdateProfile(data.username, data.photo);
         reset();
       }
@@ -54,16 +56,21 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-8 bg-white shadow-lg rounded-lg">
-        <h2 className="text-2xl font-bold text-center mb-6 text-gray-700">
-          Register
+    <div className="min-h-screen lg:flex items-center justify-center bg-gradient-to-r from-blue-100 via-white to-blue-200">
+      <div className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg relative overflow-hidden">
+        {/* Decorative Top Background */}
+        <div className="absolute -top-14 -right-14 w-32 h-32 bg-blue-500 rounded-full opacity-30"></div>
+        <div className="absolute -bottom-14 -left-14 w-32 h-32 bg-blue-300 rounded-full opacity-30"></div>
+
+        <h2 className="text-3xl font-bold text-center text-black mb-6">
+          Create an Account
         </h2>
         {error && (
           <p className="text-sm text-red-500 text-center mb-4">{error}</p>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mb-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Username Input */}
           <div>
             <label
               htmlFor="username"
@@ -76,14 +83,18 @@ const SignUp = () => {
               type="text"
               {...register("username", { required: true })}
               placeholder="Enter your username"
-              className="w-full p-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.username ? "border-red-500" : "border-gray-300"
+              }`}
             />
             {errors.username && (
-              <span className="text-sm text-red-500">
+              <p className="text-sm text-red-500 mt-1">
                 Username is required.
-              </span>
+              </p>
             )}
           </div>
+
+          {/* Mobile Input */}
           <div>
             <label
               htmlFor="mobile"
@@ -95,16 +106,19 @@ const SignUp = () => {
               id="mobile"
               type="tel"
               {...register("mobile", { required: true })}
-              placeholder="Enter your Mobile"
-              className="w-full p-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your mobile number"
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.mobile ? "border-red-500" : "border-gray-300"
+              }`}
             />
             {errors.mobile && (
-              <span className="text-sm text-red-500">
-                Mobile is required.
-              </span>
+              <p className="text-sm text-red-500 mt-1">
+                Mobile number is required.
+              </p>
             )}
           </div>
 
+          {/* Photo URL Input */}
           <div>
             <label
               htmlFor="photo"
@@ -115,15 +129,18 @@ const SignUp = () => {
             <input
               id="photo"
               type="text"
-              placeholder="Enter photo URL"
               {...register("photo", { required: true })}
-              className="w-full p-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter photo URL"
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.photo ? "border-red-500" : "border-gray-300"
+              }`}
             />
             {errors.photo && (
-              <span className="text-sm text-red-500">Photo is required.</span>
+              <p className="text-sm text-red-500 mt-1">Photo URL is required.</p>
             )}
           </div>
 
+          {/* Email Input */}
           <div>
             <label
               htmlFor="email"
@@ -142,14 +159,18 @@ const SignUp = () => {
                 },
               })}
               placeholder="Enter your email"
-              className="w-full p-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              }`}
             />
             {errors.email && (
-              <span className="text-sm text-red-500">
+              <p className="text-sm text-red-500 mt-1">
                 {errors.email.message}
-              </span>
+              </p>
             )}
           </div>
+
+          {/* Password Input */}
           <div>
             <label
               htmlFor="password"
@@ -168,15 +189,18 @@ const SignUp = () => {
                 },
               })}
               placeholder="Enter your password"
-              className="w-full p-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.password ? "border-red-500" : "border-gray-300"
+              }`}
             />
             {errors.password && (
-              <span className="text-sm text-red-500">
+              <p className="text-sm text-red-500 mt-1">
                 {errors.password.message}
-              </span>
+              </p>
             )}
           </div>
 
+          {/* Role Selection */}
           <div>
             <label
               htmlFor="role"
@@ -187,44 +211,46 @@ const SignUp = () => {
             <select
               id="role"
               {...register("role", { required: true })}
-              className="w-full p-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                errors.role ? "border-red-500" : "border-gray-300"
+              }`}
             >
               <option value="">Select an option</option>
               <option value="user">User</option>
               <option value="deliveryMan">Delivery Man</option>
             </select>
             {errors.role && (
-              <span className="text-sm text-red-500">
-                Please select your role.
-              </span>
+              <p className="text-sm text-red-500 mt-1">Role is required.</p>
             )}
           </div>
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full bg-blue-500 text-white py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
-              }`}
-            >
-              {loading ? "Registering..." : "Register"}
-            </button>
-          </div>
 
-          <div className="text-center mt-4">
-            <p className="text-sm text-gray-600">
-              Already have an account?{" "}
-              <Link
-                to="/login"
-                className="text-blue-500 hover:underline font-medium"
-              >
-                Login
-              </Link>
-            </p>
-          </div>
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full bg-blue-500 text-white py-3 rounded-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+            }`}
+          >
+            {loading ? "Registering..." : "Sign Up"}
+          </button>
         </form>
-        <SocialLogin />
+
+        {/* Redirect to Login */}
+        <p className="text-center mt-4 text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-500 hover:underline font-medium">
+            Log In
+          </Link>
+        </p>
+
+        {/* Social Login */}
+        <div className="mt-6">
+          <SocialLogin />
+        </div>
+      
       </div>
+      <Lottie animationData={register1}></Lottie>
     </div>
   );
 };

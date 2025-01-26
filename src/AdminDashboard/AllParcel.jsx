@@ -8,7 +8,11 @@ const AllParcel = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const axiosSecure = useAxiosSecure();
-  const { data: parcels = [], refetch } = useQuery({
+  const {
+    data: parcels = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["parcels", startDate, endDate],
     queryFn: async () => {
       const res = await axiosSecure.get(
@@ -31,7 +35,6 @@ const AllParcel = () => {
   const [deliveryman, setDeliveryman] = useState("");
   const [deliveryDate, setDeliveryDate] = useState("");
   const [deliveryEmail, setDeliveryEmail] = useState("");
-  
 
   const openDialog = (parcel) => {
     setSelectedParcel(parcel);
@@ -64,7 +67,10 @@ const AllParcel = () => {
 
       await axiosSecure.patch(`/users/status/${selected._id}`);
 
-      await axiosSecure.patch(`deliveryManId/status/${selected._id}`, {deliveryman, deliveryDate})
+      await axiosSecure.patch(`deliveryManId/status/${selected._id}`, {
+        deliveryman,
+        deliveryDate,
+      });
 
       toast.success("Parcel successfully assigned!");
 
@@ -82,6 +88,14 @@ const AllParcel = () => {
     setDeliveryman(selectedId);
     setDeliveryEmail(selectedMan?.email || "");
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader border-t-4 border-indigo-600 rounded-full w-12 h-12 animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -159,12 +173,15 @@ const AllParcel = () => {
                   <td className="px-4 py-2 text-sm text-gray-700">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        (parcel.status === "pending"
+                        parcel.status === "pending"
                           ? "bg-red-600 text-white"
-                          : "bg-green-100 text-green-600",
-                        parcel.status === "Cancelled"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-green-100 text-green-600")
+                          : parcel.status === "delivered"
+                          ? "bg-green-100 text-green-600"
+                          : parcel.status === "on the way"
+                          ? "bg-gray-200 text-gray-600"
+                          : parcel.status === "return"
+                          ? "bg-orange-100 text-orange-600"
+                          : ""
                       }`}
                     >
                       {parcel.status}

@@ -83,68 +83,88 @@ const MyProfile = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-16 px-8 sm:px-12">
-      <h1 className="text-2xl font-extrabold text-gray-600 mb-12">
-        My Profile
-      </h1>
-      <div className="lg:max-w-4xl bg-white rounded p-8 grid grid-cols-1 lg:grid-cols-2">
-        <div className="flex justify-center items-center">
-          <div className="relative w-48 h-48">
-            <img
-              src={profile?.photo || "/default-avatar.png"}
-              alt="Profile"
-              className="w-full h-full rounded-full object-cover border-4 border-indigo-600"
-            />
-            <label
-              htmlFor="profileUpload"
-              className="absolute bottom-0 right-0 bg-indigo-600 text-white p-3 rounded-full cursor-pointer"
-            >
-              <FaCamera size={24} />
-            </label>
-            <input
-              type="file"
-              id="profileUpload"
-              className="hidden"
-              accept="image/*"
-              onChange={handleImage}
-            />
-          </div>
+      <h1 className="text-2xl font-extrabold text-gray-600 mb-12">My Profile</h1>
+      <div className="lg:max-w-4xl mx-auto bg-white rounded-lg shadow-lg">
+        {/* Cover Photo */}
+        <div className="relative">
+          <img
+            src={profile.coverPhoto || "/default-cover.jpg"}
+            alt="Cover"
+            className="w-full h-48 object-cover rounded-t-lg"
+          />
+          <label
+            htmlFor="coverUpload"
+            className="absolute bottom-4 right-4 bg-indigo-600 text-white p-3 rounded-full cursor-pointer"
+          >
+            <FaCamera size={24} />
+          </label>
+          <input
+            type="file"
+            id="coverUpload"
+            className="hidden"
+            accept="image/*"
+            onChange={handleImage}
+          />
         </div>
 
-        <div className="space-y-6">
-          <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              Personal Info
-            </h2>
-            <div className="mt-4 space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="font-semibold text-gray-700">Name:</span>
-                <span className="text-gray-600">{profile?.name || "User"}</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-semibold text-gray-700">Email:</span>
-                <span className="text-gray-600">
-                  {profile?.email || "user@example.com"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-semibold text-gray-700">Phone:</span>
-                <span className="text-gray-600">
-                  {profile?.phone || "Not Available"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="font-semibold text-gray-700">Role:</span>
-                <span className="text-gray-600">{profile?.role || "User"}</span>
-              </div>
+        {/* Profile Section */}
+        <div className="lg:flex lg:space-x-8 p-8">
+          {/* Profile Image */}
+          <div className="flex justify-center items-center lg:w-1/4">
+            <div className="relative w-48 h-48">
+              <img
+                src={profile?.photo || "/default-avatar.png"}
+                alt="Profile"
+                className="w-full h-full rounded-full object-cover border-4 border-indigo-600"
+              />
+              <label
+                htmlFor="profileUpload"
+                className="absolute bottom-0 right-0 bg-indigo-600 text-white p-3 rounded-full cursor-pointer"
+              >
+                <FaCamera size={24} />
+              </label>
+              <input
+                type="file"
+                id="profileUpload"
+                className="hidden"
+                accept="image/*"
+                onChange={handleImage}
+              />
             </div>
           </div>
 
-          <div className="mt-6">
-            <Link to="/dashboard/update">
-              <button className="w-full py-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition-all">
-                Update Profile
-              </button>
-            </Link>
+          {/* Personal Info */}
+          <div className="lg:w-3/4 space-y-6">
+            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-all">
+              <h2 className="text-2xl font-semibold text-gray-800">Personal Info</h2>
+              <div className="mt-4 space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-700">Name:</span>
+                  <span className="text-gray-600">{profile?.name || "User"}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-700">Email:</span>
+                  <span className="text-gray-600">{profile?.email || "user@example.com"}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-700">Phone:</span>
+                  <span className="text-gray-600">{profile?.phone || "Not Available"}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-semibold text-gray-700">Role:</span>
+                  <span className="text-gray-600">{profile?.role || "User"}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Update Profile Button */}
+            <div className="mt-6">
+              <Link to="/dashboard/update">
+                <button className="w-full py-4 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition-all">
+                  Update Profile
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

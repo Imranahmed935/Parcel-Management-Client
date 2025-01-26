@@ -7,7 +7,7 @@ const MyReviews = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
 
-    const { data = {} } = useQuery({
+    const { data = {}, isLoading } = useQuery({
         queryKey: ['deliveryMan', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/singleDeliveryMan/${user?.email}`);
@@ -41,6 +41,14 @@ const MyReviews = () => {
         }
         return stars;
     };
+
+    if (isLoading) {
+        return (
+          <div className="flex justify-center items-center h-screen">
+            <div className="loader border-t-4 border-indigo-600 rounded-full w-12 h-12 animate-spin"></div>
+          </div>
+        );
+      }
 
     return (
         <div className="p-6">

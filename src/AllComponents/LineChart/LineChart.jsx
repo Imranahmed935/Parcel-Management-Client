@@ -82,7 +82,7 @@ const LineChart = ({ bookings }) => {
             {parcels.length > 0 && bookings.length > 0 ? (
                 <Chart options={chartOptions} series={chartOptions.series} type="line" height={350} />
             ) : (
-                <p>Loading data...</p>
+                <div className="loader border-t-4 border-indigo-600 rounded-full w-12 h-12 animate-spin"></div>
             )}
         </div>
     );

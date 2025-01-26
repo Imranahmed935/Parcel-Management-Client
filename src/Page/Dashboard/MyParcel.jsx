@@ -43,7 +43,6 @@ const MyParcel = () => {
       const res = await axiosSecure.get(
         `/bookParcel/${user.email}?filter=${filter}`
       );
-      console.log(res.data);
       return res.data;
     },
   });
@@ -92,7 +91,11 @@ const MyParcel = () => {
 
 
   if (isLoading) {
-    <p className="text-center text-xl font-semibold">Loading...</p>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader border-t-4 border-indigo-600 rounded-full w-12 h-12 animate-spin"></div>
+      </div>
+    );
   }
 
   if (isError) {

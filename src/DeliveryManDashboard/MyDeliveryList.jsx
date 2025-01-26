@@ -28,7 +28,7 @@ const MyDeliveryList = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
-  const { data: parcels = [], refetch } = useQuery({
+  const { data: parcels = [], refetch, isLoading } = useQuery({
     queryKey: ["assignMan"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/deliverList/${user.email}`);
@@ -113,6 +113,13 @@ const MyDeliveryList = () => {
     });
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader border-t-4 border-indigo-600 rounded-full w-12 h-12 animate-spin"></div>
+      </div>
+    );
+  }
   return (
     <div className="container mx-auto">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">

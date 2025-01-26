@@ -64,14 +64,14 @@ const BookParcel = () => {
 
   return (
     <div>
-      <h2 className="text-2xl text-indigo-500 font-bold">
+      <h2 className="text-2xl text-black font-bold">
           Book a Parcel
         </h2>
-      <div className="flex justify-center items-center  bg-gray-100 p-4">
+      <div className=" flex justify-center items-center  bg-gray-100 p-4">
        
       <form
         onSubmit={handleFormValue}
-        className="w-full max-w-4xl p-6 bg-white shadow-lg rounded-md space-y-6"
+        className="w-full p-6 bg-white shadow-lg rounded-md space-y-6"
       >
        
 

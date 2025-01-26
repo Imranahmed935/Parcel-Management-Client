@@ -5,6 +5,7 @@ import { MdNotifications } from "react-icons/md";
 import { useState } from "react";
 import logo from "../../assets/logo/parcel2.png";
 import { Button } from "@/components/ui/button";
+import { IoIosLogOut } from "react-icons/io";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,14 +36,14 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center px-4">
+    <div className="flex justify-between items-center sticky top-0 z-20 bg-white px-4">
       <div className="flex items-center gap-4">
         <img
           className="w-16 h-16 rounded-full"
           src={logo}
           alt="SwiftShip Logo"
         />
-        <h1 className="lg:text-3xl text-2xl font-bold text-gray-800">
+        <h1 className="lg:text-3xl text-2xl font-bold text-blue-600">
           SwiftShip
         </h1>
       </div>
@@ -84,7 +85,7 @@ const Navbar = () => {
                     {role === 'user' && <NavLink to={'/dashboard/profile'}> Dashboard </NavLink>}
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="right">
-                    <Button onClick={handleLogoutForm}>LogOut</Button>
+                    <Button onClick={handleLogoutForm}>LogOut <IoIosLogOut className="text-red-600 text-2xl" /></Button>
                   </DropdownMenuRadioItem>
                 </DropdownMenuRadioGroup>
               </DropdownMenuContent>
