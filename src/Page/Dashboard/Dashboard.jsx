@@ -16,7 +16,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import { FcStatistics } from "react-icons/fc";
 import { LucideNotebookPen, Menu } from "lucide-react";
 import { MdReviews } from "react-icons/md";
-import PrivateRoute from "@/route/PrivateRoute";
+
 import { IoMdClose } from "react-icons/io";
 
 const Dashboard = () => {
