@@ -7,14 +7,16 @@ import LineChart from '@/AllComponents/LineChart/LineChart';
 const Statistics = () => {
     const axiosSecure = useAxiosSecure();
 
-    const { data: bookings = [] } = useQuery({
+    const { data: bookings = [], isLoading, isError } = useQuery({
         queryKey: ['statistics'],
         queryFn: async () => {
             const res = await axiosSecure.get('/adminStats');
-  
-            return res.data.bookingsByDate.dates.map((date, index) => ({
+            const dates = res.data.bookingsByDate.dates;
+            const counts = res.data.bookingsByDate.counts;
+
+            return dates.map((date, index) => ({
                 date,
-                count: res.data.bookingsByDate.counts[index],
+                count: counts[index],
             }));
         },
     });
@@ -60,21 +62,23 @@ const Statistics = () => {
         colors: ['#00E396'],
     };
 
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
+
+    if (isError || bookings.length === 0) {
+        return <p>No data available to display</p>;
+    }
+
     return (
         <div>
             <h1 className="text-2xl font-bold mb-4">Statistics Page</h1>
-            {bookings.length > 0 ? (
-                <Chart options={chartOptions} series={chartOptions.series} type="bar" height={350} />
-            ) : (
-                <p>Loading chart...</p>
-            )}
+            <Chart options={chartOptions} series={chartOptions.series} type="bar" height={350} />
             <div>
-                <LineChart bookings={bookings} />
+                <LineChart />
             </div>
         </div>
     );
 };
 
 export default Statistics;
-
-

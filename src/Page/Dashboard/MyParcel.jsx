@@ -26,15 +26,17 @@ import { useState } from "react";
 import { Label } from "@radix-ui/react-dropdown-menu";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const MyParcel = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [filter, setFilter] = useState("");
- 
+
   const {
     data: parcels = [],
     isLoading,
+    refetch,
     isError,
     error,
   } = useQuery({
@@ -49,46 +51,67 @@ const MyParcel = () => {
 
   const handleReview = (e, id) => {
     e.preventDefault();
-  
+
     const form = e.target;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
-  
+
     const ratings = data.ratings;
     if (!ratings || isNaN(ratings)) {
-      toast.error('Invalid ratings value');
+      toast.error("Invalid ratings value");
       return;
     }
-  
+
     // POST the review data
     axiosSecure
-      .post('/reviews', data)
+      .post("/reviews", data)
       .then((res) => {
         if (res.status === 200) {
           const userReview = { reviewed: parseFloat(ratings) };
-  
+
           // Update the user with the new review
           return axiosSecure.put(`/review/man/${id}`, userReview);
         } else {
-          throw new Error('Failed to save review');
+          throw new Error("Failed to save review");
         }
       })
       .then((res) => {
         if (res.status === 200) {
-          toast.success('Review added and user updated successfully');
+          toast.success("Review added and user updated successfully");
           form.reset();
         } else {
-          throw new Error('Failed to update user review');
+          throw new Error("Failed to update user review");
         }
       })
       .catch((error) => {
-        console.error('Error submitting review or updating user:', error);
-        toast.error('Failed to submit review or update user');
+        console.error("Error submitting review or updating user:", error);
+        toast.error("Failed to submit review or update user");
       });
   };
-  
-  
 
+  const handleCancel = async (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You want to cancel this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, Cancel it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await axiosSecure.patch(`/user/cancelBooked/${id}`);
+        if (res.data.modifiedCount > 0) {
+          refetch();
+          Swal.fire({
+            title: "Cancelled!",
+            text: "Your booked has been Cancelled.",
+            icon: "success",
+          });
+        }
+      }
+    });
+  };
 
   if (isLoading) {
     return (
@@ -122,7 +145,8 @@ const MyParcel = () => {
                 <SelectItem value="delivered">delivered</SelectItem>
                 <SelectItem value="Cancelled">Cancelled</SelectItem>
                 <SelectItem value="pending">pending</SelectItem>
-                <SelectItem value="On the">On the way</SelectItem>
+                <SelectItem value="On the way">On the way</SelectItem>
+                <SelectItem value="Returned">Returned</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -189,18 +213,21 @@ const MyParcel = () => {
                     {parcel.status}
                   </span>
                 </td>
-                <td className="px-2 py-2 border border-gray-300 space-y-2">
+                <td className="px-2 py-2 border border-gray-300 flex gap-2 space-y-2">
                   {parcel.status === "pending" ? (
                     <>
                       {/* Update Button */}
                       <Link to={`/dashboard/updateParcel/${parcel._id}`}>
-                        <button className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        <button className="px-2  bg-blue-500 text-white rounded hover:bg-blue-600">
                           Update
                         </button>
                       </Link>
 
                       {/* Cancel Button */}
-                      <button className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                      <button
+                        onClick={() => handleCancel(parcel._id)}
+                        className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                      >
                         Cancel
                       </button>
 
@@ -213,18 +240,20 @@ const MyParcel = () => {
                     </>
                   ) : (
                     <>
-            
                       <button
-                        className="px-2 py-1 bg-gray-300 text-gray-600 rounded cursor-not-allowed"
+                        className="px-2  bg-gray-300 text-gray-600 rounded cursor-not-allowed"
                         disabled
                       >
                         Update
                       </button>
-               
-                      <button className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+
+                      <button
+                        className="px-2 py-1 bg-gray-300 text-gray-600 rounded cursor-not-allowed"
+                        disabled
+                      >
                         Cancel
                       </button>
-                  
+
                       <Dialog>
                         <DialogTrigger asChild>
                           <button className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">
@@ -244,68 +273,62 @@ const MyParcel = () => {
                             className="space-y-4"
                             onSubmit={(e) =>
                               handleReview(e, parcel.deliveryManId)
-                            } 
+                            }
                           >
-                           
                             <div className="grid w-full max-w-sm items-center gap-1.5">
                               <Label htmlFor="name">Name</Label>
                               <Input
                                 type="text"
                                 id="name"
-                                name="name" 
+                                name="name"
                                 defaultValue={parcel.name}
                               />
                             </div>
 
-                            
                             <div className="grid w-full max-w-sm items-center gap-1.5">
                               <Label htmlFor="image">Image</Label>
                               <Input
                                 type="text"
                                 id="image"
-                                name="image" 
+                                name="image"
                                 defaultValue={parcel.photo}
                               />
                             </div>
 
-                           
                             <div className="grid w-full max-w-sm items-center gap-1.5">
                               <Label htmlFor="id">Delivery Men’s ID</Label>
                               <Input
                                 type="text"
                                 id="id"
-                                name="id" 
+                                name="id"
                                 defaultValue={parcel.deliveryManId}
-                                readOnly 
+                                readOnly
                               />
                             </div>
 
-                           
                             <div className="grid w-full max-w-sm items-center gap-1.5">
                               <Label htmlFor="ratings">Rating out of 5</Label>
                               <Input
                                 type="number"
                                 id="ratings"
-                                name="ratings" 
+                                name="ratings"
                                 min="1"
                                 max="5"
                                 placeholder="Rate between 1 to 5"
                               />
                             </div>
 
-                           
                             <div>
                               <Label htmlFor="review">Give your Review</Label>
                               <textarea
                                 id="review"
-                                name="review" 
+                                name="review"
                                 className="w-full border rounded-md p-2"
                                 rows="4"
                                 placeholder="Write your review..."
                               ></textarea>
                             </div>
 
-                        
                             <button
                               type="submit"
                               className="btn-secondary w-full bg-blue-600 py-1 rounded text-white hover:bg-blue-700"
@@ -315,7 +338,6 @@ const MyParcel = () => {
                           </form>
                         </DialogContent>
                       </Dialog>
-                      ;
                     </>
                   )}
                 </td>

@@ -19,6 +19,7 @@ import AdminRoute from "./AdminRoute";
 import MyDeliveryList from "@/DeliveryManDashboard/MyDeliveryList";
 import MyReviews from "@/DeliveryManDashboard/MyReviews";
 import Payment from "@/Page/Payment/Payment";
+import PrivateRoute from "./PrivateRoute";
 
  const router = createBrowserRouter([
     {
@@ -42,7 +43,7 @@ import Payment from "@/Page/Payment/Payment";
     },
     {
         path:'/dashboard',
-        element:<Dashboard/>,
+        element:<PrivateRoute><Dashboard/></PrivateRoute>,
         children:[
             {
                 path:'profile',
@@ -66,7 +67,7 @@ import Payment from "@/Page/Payment/Payment";
             },
             {
                 path:'statistics',
-                element:<Statistics/>
+                element:<AdminRoute><Statistics/></AdminRoute>
             },
             {
                 path:'AllUsers',

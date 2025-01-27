@@ -1,98 +1,208 @@
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import { FaBox, FaBoxOpen, FaHome, FaListAlt, FaShippingFast, FaUser, FaUsers } from "react-icons/fa";
+import React, { useState } from "react";
+import {
+  FaBox,
+  FaBoxOpen,
+
+  FaHome,
+  FaListAlt,
+  FaShippingFast,
+  FaUser,
+  FaUsers,
+} from "react-icons/fa";
 import { NavLink, Outlet } from "react-router-dom";
 import { FcStatistics } from "react-icons/fc";
-import { LucideNotebookPen } from "lucide-react";
+import { LucideNotebookPen, Menu } from "lucide-react";
 import { MdReviews } from "react-icons/md";
 import PrivateRoute from "@/route/PrivateRoute";
+import { IoMdClose } from "react-icons/io";
 
 const Dashboard = () => {
   const axiosPublic = useAxiosPublic();
-  const {user} = useAuth()
+  const { user } = useAuth();
 
-  const { data={} } = useQuery({
+  const { data = {} } = useQuery({
     queryKey: ["role"],
     queryFn: async () => {
       const res = await axiosPublic.get(`/userDashboard/${user.email}`);
-      return res.data; 
+      return res.data;
     },
   });
 
+  // dashboard menu
+  const [sidebarOpen, setSideBarOpen] = useState(false);
+  const toggleDrawer = () => {
+    setSideBarOpen(!sidebarOpen);
+  };
+
   return (
-    <div className="flex flex-col md:flex-row ">
-      {/* Sidebar */}
-      <div className="bg-gray-800 text-white flex flex-col items-center min-h-screen py-8 w-full md:w-1/5">
-        <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-        <ul className="space-y-4 text-lg">
-          {/* Admin Menu */}
-          {data.role === "admin" && (
-            <>
-              <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-               <FcStatistics className="text-2xl"/>
-               <PrivateRoute> <NavLink to="Statistics" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>Statistics</NavLink></PrivateRoute>
-              </li>
-              <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-                <FaUsers/>
-               <PrivateRoute> <NavLink to="AllUsers" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>All Users</NavLink></PrivateRoute>
-              </li>
-              <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-              <FaBoxOpen />
-               <PrivateRoute> <NavLink to="AllParcels" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>All Parcels</NavLink></PrivateRoute>
-              </li>
-              <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-                <FaShippingFast/>
-               <PrivateRoute> <NavLink to="DeliverMan" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>All Delivery Man</NavLink></PrivateRoute>
-              </li>
-            </>
-          )}
 
-          {/* User Menu */}
-          {data.role === "user" && (
-            <>
-              <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-                <FaUser/>
-                <PrivateRoute><NavLink to="profile" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>My Profile</NavLink></PrivateRoute>
-              </li>
-              <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-              <LucideNotebookPen />
-              <PrivateRoute><NavLink to="bookParcel" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>Book A Parcel</NavLink></PrivateRoute>  
-              </li>
-              <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-                <FaBox/>
-               <PrivateRoute> <NavLink to="myParcel" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>My Parcel</NavLink></PrivateRoute>
-              </li>
-            </>
-          )}
+    <div className="">
+      <div
+        aria-label="close-sidebar"
+        onClick={toggleDrawer}
+        className={`fixed inset-0 z-40 bg-black transition-all duration-300 ${
+          sidebarOpen ? "opacity-50 visible" : "opacity-0 invisible"
+        }`}
+      ></div>
+      <div
+        className={`fixed  top-0 z-50 left-0 w-68 p-10 h-full text-black shadow-lg bg-gray-300 transform transition-transform duration-300 lg:translate-x-0 ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } overflow-y-auto`}
+      >
+        <button onClick={toggleDrawer} className="lg:hidden text-red-600 text-2xl  ">
+        <IoMdClose />
+        </button>
+        <div className=" text-black p-2">
+          {/* websites title */}
+          <h1 className="text-2xl font-bold mb-10">Dashboard</h1>
+        </div>
+        <div className="divider mb-0"></div>
 
-          {/* Delivery Man Menu */}
-          {data.role === "deliveryMan" && (
-            <>
-              <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-                <FaListAlt/>
-                <PrivateRoute><NavLink to="myDeliveryList" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>My Delivery List</NavLink></PrivateRoute>
-              </li>
-              <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-              <MdReviews />
-                <PrivateRoute><NavLink to="reviews" className={({isActive})=> isActive ? 'bg-white px-2 rounded text-gray-600':''}>My Reviews</NavLink></PrivateRoute>
-              </li>
-            </>
-          )}
-
-          {/* Common Menu */}
-          <hr className="w-full border-t border-gray-300 my-4" />
-          <li className="hover:text-gray-300 flex items-center gap-2 cursor-pointer">
-            <FaHome/> 
-            <NavLink to="/" >Home</NavLink>
-          </li>
-        </ul>
+        {/* sidbar content */}
+        <div className="space-y-2">
+          <ul className="space-y-4 text-lg">
+             {/* Admin Menu */}
+            {data.role === "admin" && (
+              <>
+                <li className="text-black flex items-center gap-2 cursor-pointer">
+                  <FcStatistics className="text-2xl" />
+                  <NavLink
+                    to="Statistics"
+                    className={({ isActive }) =>
+                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                    }
+                  >
+                    Statistics
+                  </NavLink>
+                </li>
+                <li className="text-black flex items-center gap-2 cursor-pointer">
+                  <FaUsers />
+                  <NavLink
+                    to="AllUsers"
+                    className={({ isActive }) =>
+                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                    }
+                  >
+                    All Users
+                  </NavLink>
+                </li>
+                <li className="text-black flex items-center gap-2 cursor-pointer">
+                  <FaBoxOpen />
+                  <NavLink
+                    to="AllParcels"
+                    className={({ isActive }) =>
+                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                    }
+                  >
+                    All Parcels
+                  </NavLink>
+                </li>
+                <li className="text-black flex items-center gap-2 cursor-pointer">
+                  <FaShippingFast />
+                  <NavLink
+                    to="DeliverMan"
+                    className={({ isActive }) =>
+                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                    }
+                  >
+                    All Delivery Man
+                  </NavLink>
+                </li>
+              </>
+            )}
+            {/* User Menu */}
+            {data.role === "user" && (
+              <>
+                <li className="text-black flex items-center gap-2 cursor-pointer">
+                  <FaUser />
+                  <NavLink
+                    to="profile"
+                    className={({ isActive }) =>
+                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                    }
+                  >
+                    My Profile
+                  </NavLink>
+                </li>
+                <li className=" text-black flex items-center gap-2 cursor-pointer">
+                  <LucideNotebookPen />
+                  <NavLink
+                    to="bookParcel"
+                    className={({ isActive }) =>
+                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                    }
+                  >
+                    Book A Parcel
+                  </NavLink>
+                </li>
+                <li className=" text-black flex items-center gap-2 cursor-pointer">
+                  <FaBox />
+                  <NavLink
+                    to="myParcel"
+                    className={({ isActive }) =>
+                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                    }
+                  >
+                    My Parcel
+                  </NavLink>
+                </li>
+              </>
+            )}
+            {/* Delivery Man Menu */}
+            {data.role === "deliveryMan" && (
+              <>
+                <li className="text-black flex items-center gap-2 cursor-pointer">
+                  <FaListAlt />
+                  <NavLink
+                    to="myDeliveryList"
+                    className={({ isActive }) =>
+                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                    }
+                  >
+                    My Delivery List
+                  </NavLink>
+                </li>
+                <li className="text-black flex items-center gap-2 cursor-pointer">
+                  <MdReviews />
+                  <NavLink
+                    to="reviews"
+                    className={({ isActive }) =>
+                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                    }
+                  >
+                    My Reviews
+                  </NavLink>
+                </li>
+              </>
+            )}
+            {/* Common Menu */}
+            <hr className="w-full border-t border-gray-300 my-4" />
+            <li className="text-black flex items-center gap-2 cursor-pointer">
+              <FaHome />
+              <NavLink to="/">Home</NavLink>
+            </li>
+          </ul>
+        </div>
       </div>
-
-      {/* Content */}
-      <div className="flex-1 bg-gray-100 p-8 border-t md:border-t-0 md:border-l border-gray-300">
-        <Outlet />
+      {/* main contsan */}
+      <div
+        className={`flex-1 p-3 transition-transform duration-300 lg:ml-60 ${
+          sidebarOpen ? "lg:ml-64" : ""
+        }`}
+      >
+        <button
+          onClick={toggleDrawer}
+          className="p-2 text-black text-lg rounded-md lg:hidden"
+        >
+         <Menu/>
+        </button>
+        {/* main page content */}
+        <div className=" lg:mt-0">
+          <Outlet></Outlet>
+        </div>
       </div>
     </div>
   );

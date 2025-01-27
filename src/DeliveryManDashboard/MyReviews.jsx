@@ -11,7 +11,6 @@ const MyReviews = () => {
         queryKey: ['deliveryMan', user?.email],
         queryFn: async () => {
             const res = await axiosSecure.get(`/singleDeliveryMan/${user?.email}`);
-            console.log(res.data);
             return res.data;
         },
     });
@@ -20,7 +19,6 @@ const MyReviews = () => {
         queryKey: ['reviews', data?._id],
         queryFn: async () => {
             const res = await axiosSecure.get(`/reviews/${data?._id}`);
-            console.log(res.data);
             return res.data;
         },
         enabled: !!data?._id,

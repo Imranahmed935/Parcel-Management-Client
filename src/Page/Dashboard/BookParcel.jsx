@@ -2,11 +2,13 @@ import useAuth from "@/Hooks/useAuth";
 import useAxiosSecure from "@/Hooks/useAxiosSecure";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const BookParcel = () => {
   const { user } = useAuth();
-  const [price, setPrice] = useState(50);
+  const [price, setPrice] = useState(0);
   const axiosSecure = useAxiosSecure();
+  const navigate = useNavigate()
   
 
   const handleFormValue = async (e) => {
@@ -48,20 +50,25 @@ const BookParcel = () => {
     const res = await axiosSecure.post("/bookParcel", allData);
     if (res.data.insertedId) {
       toast.success("Parcel booked successfully!");
+      navigate('/dashboard/myParcel')
+      
     }
   };
 
   const handleWeightChange = (e) => {
     const weight = e.target.value;
-    if (weight === "1") {
+    if (weight == 1) {
       setPrice(50);
-    } else if (weight === "2") {
+    } else if (weight == 2) {
       setPrice(100);
     } else if (weight > 2) {
       setPrice(150);
+    }else{
+      setPrice(0)
     }
+  
   };
-
+    
   return (
     <div>
       <h2 className="text-2xl text-black font-bold">
@@ -104,7 +111,7 @@ const BookParcel = () => {
               Phone Number
             </label>
             <input
-              type="tel"
+              type="number"
               name="number"
               placeholder="Enter phone number"
               className="w-full mt-2 p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -161,7 +168,7 @@ const BookParcel = () => {
               Receiver's Phone Number
             </label>
             <input
-              type="tel"
+              type="number"
               name="receiverPhone"
               placeholder="Enter receiver's phone number"
               className="w-full mt-2 p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
@@ -223,9 +230,9 @@ const BookParcel = () => {
               Price
             </label>
             <input
-              type="text"
+              type="number"
               name="price"
-              value={`${price} Tk`}
+              value={price}
               readOnly
               className="w-full mt-2 p-3 border bg-gray-100 rounded-md focus:outline-none"
             />

@@ -187,7 +187,7 @@ const MyDeliveryList = () => {
                 <td className="px-4 py-2 text-center space-x-2">
                   <Dialog>
                     <DialogTrigger asChild>
-                      <button className="px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+                      <button className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
                         See Location
                       </button>
                     </DialogTrigger>

@@ -1,88 +1,51 @@
 import React from 'react';
-import Chart from 'react-apexcharts';
+import ReactApexChart from 'react-apexcharts';
 import useAxiosSecure from '@/Hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
 
-const LineChart = ({ bookings }) => {
+const LineChart = () => {
     const axiosSecure = useAxiosSecure();
 
-    const { data: parcels = [] } = useQuery({
-        queryKey: ['parcels'],
+    const { data: parcels = {}, isLoading } = useQuery({
+        queryKey: ['parcelLine'],
         queryFn: async () => {
-            const res = await axiosSecure.get('/totalParcels');
-            return res.data.map((parcel) => ({
-                deliveryDate: parcel.deliveryDate,
-                delivered: parcel.delivered,
-            }));
+            const res = await axiosSecure.get('/adminStats');
+            return res.data;
         },
     });
 
-    const chartOptions = {
-        series: [
-            {
-                name: 'Booked Parcels',
-                data: bookings.map((item) => ({
-                    x: item.date, 
-                    y: item.count, 
-                })),
-            },
-            {
-                name: 'Delivered Parcels',
-                data: parcels.map((item) => ({
-                    x: item.deliveryDate, 
-                    y: item.delivered, 
-                })),
-            },
-        ],
-        chart: {
-            type: 'line',
-            height: 350,
-            zoom: {
-                enabled: true,
-            },
+    // Default values to prevent errors on first render
+    const dates = parcels?.bookingVsDelivered?.dates || [];
+    const booked = parcels?.bookingVsDelivered?.booked || [];
+    const delivered = parcels?.bookingVsDelivered?.delivered || [];
+
+    const optionsForLine = {
+        chart: { type: 'line', height: 350 },
+        xaxis: { 
+            categories: dates,
+            title: { text: 'Dates' },
         },
-        xaxis: {
-            type: 'category',
-            title: {
-                text: 'Date',
-            },
-            labels: {
-                rotate: -45,
-                formatter: (value) => new Date(value).toLocaleDateString(),
-            },
-        },
-        yaxis: {
-            title: {
-                text: 'Number of Parcels',
-            },
-        },
-        stroke: {
-            curve: 'smooth', 
-        },
-        markers: {
-            size: 5, 
-        },
-        title: {
-            text: 'Booked vs Delivered Parcels',
-            align: 'center',
-        },
-        legend: {
-            position: 'top',
-        },
-        tooltip: {
-            shared: true,
-            intersect: false,
-        },
-        colors: ['#00E396', '#775DD0'],
+        title: { text: 'Comparison of Booked and Delivered Parcels', align: 'center' },
+        colors: ['#00E396', '#FF4560'],
+        dataLabels: { enabled: true },
     };
+
+    const seriesForLine = [
+        { name: 'Bookings', data: booked },
+        { name: 'Delivered', data: delivered },
+    ];
+
+    if (isLoading) {
+        return <p>Loading Line Chart...</p>;
+    }
 
     return (
         <div>
-            <h1 className="text-2xl font-bold mb-4 w-7/12">Line Chart</h1>
-            {parcels.length > 0 && bookings.length > 0 ? (
-                <Chart options={chartOptions} series={chartOptions.series} type="line" height={350} />
+            <h1 className="text-2xl font-bold mb-4">Line Chart</h1>
+            {dates.length > 0 ? (
+                <ReactApexChart options={optionsForLine} series={seriesForLine} type="line" height={350} />
             ) : (
-                <div className="loader border-t-4 border-indigo-600 rounded-full w-12 h-12 animate-spin"></div>
+                <p>No data available to display</p>
             )}
         </div>
     );
