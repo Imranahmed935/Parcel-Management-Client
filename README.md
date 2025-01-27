@@ -3,18 +3,13 @@
 SwiftShip is an advanced delivery management system that simplifies parcel booking, delivery tracking, and user management. Designed for both administrators and end-users, it ensures a seamless and efficient delivery experience.
 
 ## 🌐 Live Website
-[Visit Live Site](https://your-live-site-url.com)
+[Visit Live Site](https://swiftships.netlify.app)
 
 ## 🔑 Credentials
 ### Admin
-- **Username**: admin@example.com
-- **Password**: admin123
+- **Username**: im@gmail.com
+- **Password**: Imran1#
 
-### Delivery Man
-- **Username**: deliveryman@example.com
-- **Password**: delivery123
-
----
 
 ## ✨ Features
 
