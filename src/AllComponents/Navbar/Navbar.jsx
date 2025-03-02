@@ -22,8 +22,8 @@ import toast from "react-hot-toast";
 const Navbar = () => {
   const [position, setPosition] = useState("bottom");
   const { user, handleLogout } = useAuth();
-  const [role] = useRole();
-  
+  const [roleUser] = useRole();
+
 
   const handleLogoutForm = () => {
     handleLogout()
@@ -36,22 +36,28 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center sticky top-0 z-20 bg-white px-4">
+    <div className=" p-2 sticky top-0 z-20 bg-[#d2fef6fe]">
+      <div className="flex justify-between items-center px-4 lg:w-10/12 mx-auto ">
       <div className="flex items-center gap-4">
         <img
           className="w-16 h-16 rounded-full"
           src={logo}
           alt="SwiftShip Logo"
         />
-        <h1 className="lg:text-3xl text-2xl font-bold text-blue-600">
+        <h1 className="lg:text-3xl text-2xl font-bold text-[#235348]">
           SwiftShip
         </h1>
       </div>
 
-
       <div className="flex items-center gap-6">
-        <NavLink to="/" className="text-lg text-gray-700 hover:text-blue-500">
+        <NavLink to="/" className="text-lg text-gray-700 font-semibold">
           Home
+        </NavLink>
+        <NavLink to="/about" className="text-lg text-gray-700 font-semibold">
+          About Us
+        </NavLink>
+        <NavLink to="/contact" className="text-lg text-gray-700 font-semibold">
+          Contact us
         </NavLink>
 
         <NavLink  className="text-lg">
@@ -60,7 +66,6 @@ const Navbar = () => {
 
         {user ? (
           <>
-
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
  
@@ -80,9 +85,9 @@ const Navbar = () => {
                     {user?.displayName}
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="bottom">
-                    {role === 'admin' && <NavLink to={'/dashboard/statistics'}> Dashboard </NavLink>}
-                    {role === 'deliveryMan' && <NavLink to={'/dashboard/myDeliveryList'}> Dashboard </NavLink>}
-                    {role === 'user' && <NavLink to={'/dashboard/profile'}> Dashboard </NavLink>}
+                    {roleUser === 'admin' && <NavLink to={'/dashboard/statistics'}> Dashboard </NavLink>}
+                    {roleUser === 'deliveryMan' && <NavLink to={'/dashboard/myDeliveryList'}> Dashboard </NavLink>}
+                    {roleUser === 'user' && <NavLink to={'/dashboard/profile'}> Dashboard </NavLink>}
                   </DropdownMenuRadioItem>
                   <DropdownMenuRadioItem value="right">
                     <Button onClick={handleLogoutForm}>LogOut <IoIosLogOut className="text-red-600 text-2xl" /></Button>
@@ -95,13 +100,14 @@ const Navbar = () => {
           <>
             <Link to={"/login"}>
               {" "}
-              <Button className="bg-blue-500 text-white hover:bg-blue-600">
+              <Button className="bg-[#f8de5a] text-black rounded hover:bg-[#c5a91b]">
                 Login
               </Button>
             </Link>
           </>
         )}
       </div>
+    </div>
     </div>
   );
 };

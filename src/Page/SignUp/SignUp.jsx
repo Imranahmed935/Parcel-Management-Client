@@ -56,8 +56,8 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen lg:flex items-center justify-center bg-gradient-to-r from-blue-100 via-white to-blue-200">
-      <div className="w-full max-w-lg p-8 bg-white shadow-xl rounded-lg relative overflow-hidden">
+    <div className="min-h-screen lg:flex items-center justify-center bg-gradient-to-r from-blue-100 via-white to-blue-100">
+      <div className="w-full max-w-lg p-8 bg-white rounded relative overflow-hidden">
         {/* Decorative Top Background */}
         <div className="absolute -top-14 -right-14 w-32 h-32 bg-blue-500 rounded-full opacity-30"></div>
         <div className="absolute -bottom-14 -left-14 w-32 h-32 bg-blue-300 rounded-full opacity-30"></div>
@@ -69,7 +69,7 @@ const SignUp = () => {
           <p className="text-sm text-red-500 text-center mb-4">{error}</p>
         )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
           {/* Username Input */}
           <div>
             <label
@@ -250,7 +250,9 @@ const SignUp = () => {
         </div>
       
       </div>
+      <div className="max-w-sm">
       <Lottie animationData={register1}></Lottie>
+      </div>
     </div>
   );
 };

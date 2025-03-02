@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import {
   FaBox,
   FaBoxOpen,
-
   FaHome,
   FaListAlt,
   FaShippingFast,
@@ -16,13 +15,11 @@ import { NavLink, Outlet } from "react-router-dom";
 import { FcStatistics } from "react-icons/fc";
 import { LucideNotebookPen, Menu } from "lucide-react";
 import { MdReviews } from "react-icons/md";
-
 import { IoMdClose } from "react-icons/io";
 
 const Dashboard = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
-
   const { data = {} } = useQuery({
     queryKey: ["role"],
     queryFn: async () => {
@@ -38,8 +35,7 @@ const Dashboard = () => {
   };
 
   return (
-
-    <div className="">
+    <div className="w-9/12 mx-auto">
       <div
         aria-label="close-sidebar"
         onClick={toggleDrawer}
@@ -48,12 +44,15 @@ const Dashboard = () => {
         }`}
       ></div>
       <div
-        className={`fixed  top-0 z-50 left-0 w-68 p-10 h-full text-black shadow-lg bg-gray-300 transform transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed top-0 z-50 left-0 lg:left-52 w-68 p-10 h-full text-black shadow-lg bg-gray-300 transform transition-transform duration-300 lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } overflow-y-auto`}
       >
-        <button onClick={toggleDrawer} className="lg:hidden text-red-600 text-2xl  ">
-        <IoMdClose />
+        <button
+          onClick={toggleDrawer}
+          className="lg:hidden text-red-600 text-2xl  "
+        >
+          <IoMdClose />
         </button>
         <div className=" text-black p-2">
           {/* websites title */}
@@ -64,7 +63,7 @@ const Dashboard = () => {
         {/* sidbar content */}
         <div className="space-y-2">
           <ul className="space-y-4 text-lg">
-             {/* Admin Menu */}
+            {/* Admin Menu */}
             {data.role === "admin" && (
               <>
                 <li className="text-black flex items-center gap-2 cursor-pointer">
@@ -197,10 +196,10 @@ const Dashboard = () => {
           onClick={toggleDrawer}
           className="p-2 text-black text-lg rounded-md lg:hidden"
         >
-         <Menu/>
+          <Menu />
         </button>
         {/* main page content */}
-        <div className=" lg:mt-0">
+        <div className=" lg:mt-0 ">
           <Outlet></Outlet>
         </div>
       </div>

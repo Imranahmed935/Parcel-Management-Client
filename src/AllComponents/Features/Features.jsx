@@ -15,7 +15,8 @@ const Features = () => {
   });
 
   return (
-    <div className="bg-gray-100 py-16 px-6 lg:w-7/12 mx-auto">
+   <div className="bg-[#e9f1f8]">
+     <div className="py-16 px-6 lg:w-7/12 mx-auto">
       <div className="text-center mb-12">
         <h2 className="lg:text-3xl text-2xl text-gray-500 font-bold mb-4">Our Features</h2>
         <p className="text-gray-600">
@@ -23,7 +24,7 @@ const Features = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-        <div className=" shadow-lg bg-red-100 rounded-lg p-6">
+        <div className=" bg-red-100 rounded-lg p-6 hover:scale-105 duration-500">
           <div className="text-red-500 text-4xl mb-4">
             <FaLock />
           </div>
@@ -34,7 +35,7 @@ const Features = () => {
           </p>
         </div>
         {/* Feature 2 */}
-        <div className="bg-teal-100 shadow-lg rounded-lg p-6 ">
+        <div className="bg-teal-100 rounded-lg p-6 hover:scale-105 duration-500">
           <div className="text-teal-500 text-4xl mb-4">
             <FaShippingFast />
           </div>
@@ -45,7 +46,7 @@ const Features = () => {
           </p>
         </div>
 
-        <div className="bg-purple-100 shadow-lg rounded-lg p-6">
+        <div className="bg-purple-100  rounded-lg p-6 hover:scale-105 duration-500">
           <div className="text-purple-500 text-4xl mb-4">
             <FaUsers />
           </div>
@@ -64,12 +65,12 @@ const Features = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-[#8EB69B] rounded- p-6 text-center">
+        <div className="bg-[#9de9b5] rounded- p-6 text-center hover:scale-105 duration-500">
           <CountUp end={stats.totalParcel} className="text-5xl text-white" />
           <p className="text-gray-600">Total Parcels Booked</p>
         </div>
 
-        <div className="bg-[#E5F3F3] rounded p-6 text-center">
+        <div className="bg-[#a9ebeb] rounded p-6 text-center hover:scale-105 duration-500 ">
           <CountUp
             end={stats.totalDelivered}
             className="text-5xl text-green-500"
@@ -77,7 +78,7 @@ const Features = () => {
           <p className="text-gray-600">Total Parcels Delivered</p>
         </div>
 
-        <div className="bg-[#BACEE3] rounded p-6 text-center">
+        <div className="bg-[#b9dbff] rounded p-6 text-center hover:scale-105 duration-500">
           <CountUp
             end={stats.totalUsers}
             className="text-5xl text-indigo-600"
@@ -86,6 +87,7 @@ const Features = () => {
         </div>
       </div>
     </div>
+   </div>
   );
 };
 

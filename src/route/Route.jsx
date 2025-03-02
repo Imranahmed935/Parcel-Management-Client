@@ -20,6 +20,8 @@ import MyDeliveryList from "@/DeliveryManDashboard/MyDeliveryList";
 import MyReviews from "@/DeliveryManDashboard/MyReviews";
 import Payment from "@/Page/Payment/Payment";
 import PrivateRoute from "./PrivateRoute";
+import AboutUs from "@/Page/AboutUs";
+import ContactUs from "@/Page/ContactUs";
 
  const router = createBrowserRouter([
     {
@@ -30,6 +32,14 @@ import PrivateRoute from "./PrivateRoute";
             {
                 path:'/',
                 element:<Home/>
+            },
+            {
+                path:'/about',
+                element:<AboutUs/>
+            },
+            {
+                path:'/contact',
+                element:<ContactUs/>
             },
             {
                 path:'/login',
