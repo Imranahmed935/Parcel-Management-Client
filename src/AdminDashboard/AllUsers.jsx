@@ -9,7 +9,7 @@ const AllUsers = () => {
   const axiosSecure = useAxiosSecure();
 
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   const {
     data: users = [],
@@ -96,19 +96,19 @@ const AllUsers = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+      <h1 className="text-2xl  font-semibold text-gray-800 mb-6">
         All Users ({users.length})
       </h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
           <thead>
-            <tr className="bg-gray-100 text-gray-700">
-              <th className="px-4 py-2 text-left text-sm font-medium">Name</th>
-              <th className="px-4 py-2 text-left text-sm font-medium">Phone Number</th>
-              <th className="px-4 py-2 text-center text-sm font-medium">Parcels Booked</th>
-              <th className="px-4 py-2 text-center text-sm font-medium">Total Spent</th>
-              <th className="px-4 py-2 text-center text-sm font-medium">Role</th>
-              <th className="px-4 py-2 text-center text-sm font-medium">Actions</th>
+            <tr className="bg-gray-100 text-gray-700 border border-gray-400">
+              <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">Name</th>
+              <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">Phone Number</th>
+              <th className="px-4 py-2 text-center text-sm font-medium border border-gray-400">Parcels Booked</th>
+              <th className="px-4 py-2 text-center text-sm font-medium border border-gray-400">Total Spent</th>
+              <th className="px-4 py-2 text-center text-sm font-medium border border-gray-400">Role</th>
+              <th className="px-4 py-2 text-center text-sm font-medium border border-gray-400">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -117,25 +117,25 @@ const AllUsers = () => {
                 key={user._id}
                 className={`${index % 2 === 0 ? "bg-gray-50" : "bg-white"} hover:bg-gray-100 transition duration-200`}
               >
-                <td className="px-4 py-2 text-sm text-gray-700">{user.name || "N/A"}</td>
-                <td className="px-4 py-2 text-sm text-gray-700">{user.phone || "N/A"}</td>
-                <td className="px-4 py-2 text-center text-sm text-gray-700">{user.totalBooked || 0}</td>
-                <td className="px-4 py-2 text-center text-sm text-gray-700">${user.totalPrice?.toFixed(2) || "0.00"}</td>
+                <td className="px-4 py-2 text-sm text-gray-700 border">{user.name || "N/A"}</td>
+                <td className="px-4 py-2 text-sm text-gray-700 border">{user.phone || "N/A"}</td>
+                <td className="px-4 py-2 text-center text-sm text-gray-700 border">{user.totalBooked || 0}</td>
+                <td className="px-4 py-2 text-center text-sm text-gray-700 border">${user.totalPrice?.toFixed(2) || "0.00"}</td>
                 <td
                   className={`px-4 py-2 text-center text-sm text-gray-700 ${
-                    user.role === "deliveryMan" ? "bg-indigo-500 text-white" :
-                    user.role === "admin" ? "bg-green-500 text-white" :
-                    user.role === "user" ? "bg-gray-500 text-white" : ""
+                    user.role === "deliveryMan" ? "bg-indigo-500 text-white border" :
+                    user.role === "admin" ? "bg-green-500 text-white border" :
+                    user.role === "user" ? "bg-gray-500 text-white border" : ""
                   }`}
                 >
                   {user.role || "N/A"}
                 </td>
 
-                <td className="px-4 py-2 text-center">
+                <td className="px-4 py-2 text-center border">
                   <div className="flex gap-2 justify-center">
                     <button
                       disabled={user.role === "deliveryMan"}
-                      className={`px-4 py-2 text-sm font-medium text-white rounded-lg shadow-sm ${
+                      className={`px-4 py-2 text-sm font-medium text-white rounded-lg  shadow-sm ${
                         user.role === "deliveryMan" ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
                       }`}
                       onClick={() => handleMakeDeliveryMan(user._id)}

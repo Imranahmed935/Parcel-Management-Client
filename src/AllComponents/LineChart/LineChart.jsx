@@ -40,8 +40,7 @@ const LineChart = () => {
     }
 
     return (
-        <div>
-            <h1 className="text-2xl font-bold mb-4">Line Chart</h1>
+        <div className='lg:mt-16 border border-gray-400 rounded-xl p-2'>
             {dates.length > 0 ? (
                 <ReactApexChart options={optionsForLine} series={seriesForLine} type="line" height={350} />
             ) : (

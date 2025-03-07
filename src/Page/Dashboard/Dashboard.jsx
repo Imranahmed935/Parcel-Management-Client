@@ -21,7 +21,7 @@ const Dashboard = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const { data = {} } = useQuery({
-    queryKey: ["role"],
+    queryKey: ["role1", user?.email],
     queryFn: async () => {
       const res = await axiosPublic.get(`/userDashboard/${user.email}`);
       return res.data;
@@ -35,7 +35,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="w-9/12 mx-auto">
+   <div className="">
+     <div className="lg:w-9/12 mx-auto">
       <div
         aria-label="close-sidebar"
         onClick={toggleDrawer}
@@ -44,7 +45,7 @@ const Dashboard = () => {
         }`}
       ></div>
       <div
-        className={`fixed top-0 z-50 left-0 lg:left-52 w-68 p-10 h-full text-black shadow-lg bg-gray-300 transform transition-transform duration-300 lg:translate-x-0 ${
+        className={`fixed top-0 z-50 left-0 lg:left-52 w-68 p-10 h-full text-black shadow-lg  bg-gray-300 transform transition-transform duration-300 lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         } overflow-y-auto`}
       >
@@ -71,7 +72,7 @@ const Dashboard = () => {
                   <NavLink
                     to="Statistics"
                     className={({ isActive }) =>
-                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                      isActive ? "bg-black text-white px-2 rounded " : ""
                     }
                   >
                     Statistics
@@ -82,7 +83,7 @@ const Dashboard = () => {
                   <NavLink
                     to="AllUsers"
                     className={({ isActive }) =>
-                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                      isActive ? "bg-black text-white px-2 rounded " : ""
                     }
                   >
                     All Users
@@ -93,7 +94,7 @@ const Dashboard = () => {
                   <NavLink
                     to="AllParcels"
                     className={({ isActive }) =>
-                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                      isActive ? "bg-black text-white px-2 rounded " : ""
                     }
                   >
                     All Parcels
@@ -104,7 +105,7 @@ const Dashboard = () => {
                   <NavLink
                     to="DeliverMan"
                     className={({ isActive }) =>
-                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                      isActive ? "bg-black text-white px-2 rounded " : ""
                     }
                   >
                     All Delivery Man
@@ -120,7 +121,7 @@ const Dashboard = () => {
                   <NavLink
                     to="profile"
                     className={({ isActive }) =>
-                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                      isActive ? "bg-black text-white px-2 rounded " : ""
                     }
                   >
                     My Profile
@@ -131,7 +132,7 @@ const Dashboard = () => {
                   <NavLink
                     to="bookParcel"
                     className={({ isActive }) =>
-                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                      isActive ? "bg-black text-white px-2 rounded " : ""
                     }
                   >
                     Book A Parcel
@@ -142,7 +143,7 @@ const Dashboard = () => {
                   <NavLink
                     to="myParcel"
                     className={({ isActive }) =>
-                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                      isActive ? "bg-black text-white px-2 rounded " : ""
                     }
                   >
                     My Parcel
@@ -158,7 +159,7 @@ const Dashboard = () => {
                   <NavLink
                     to="myDeliveryList"
                     className={({ isActive }) =>
-                      isActive ? "bg-white px-2 rounded text-gray-600" : ""
+                      isActive ? "bg-black text-white px-2 rounded " : ""
                     }
                   >
                     My Delivery List
@@ -204,6 +205,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+   </div>
   );
 };
 

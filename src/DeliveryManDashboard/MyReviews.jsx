@@ -57,15 +57,16 @@ const MyReviews = () => {
                     {reviews.map((review) => (
                         <div
                             key={review._id}
-                            className="border rounded-lg p-6 shadow-lg bg-white"
+                            className="border rounded-lg p-2 bg-white"
                         >
-                            <h2 className="text-xl text-center font-semibold mb-4">{review.name}</h2>
+                            
                             <img
                                 src={review.image}
                                 alt={review.name}
-                                className="w-24 h-24 object-cover rounded-full mx-auto mb-4" 
+                                className="w-16 h-16 object-cover rounded-full mx-auto mb-2" 
                             />
-                            <p className="text-gray-700 mb-4">{review.review}</p>
+                            <h2 className="text-xl text-center font-semibold mb-2">{review.name}</h2>
+                            <p className="text-gray-700 mb-2">{review.review}</p>
                             <p className="text-sm text-gray-500">Rating: {renderStars(review.ratings)}</p>
                         </div>
                     ))}

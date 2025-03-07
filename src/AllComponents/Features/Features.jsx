@@ -4,6 +4,7 @@ import React from "react";
 import { FaLock, FaShippingFast, FaUsers } from "react-icons/fa";
 import CountUp from "react-countup";
 
+
 const Features = () => {
   const axiosSecure = useAxiosSecure();
   const { data: stats = {} } = useQuery({
@@ -15,8 +16,8 @@ const Features = () => {
   });
 
   return (
-   <div className="bg-[#e9f1f8]">
-     <div className="py-16 px-6 lg:w-7/12 mx-auto">
+   <div className="bg-[#ebf1f7]">
+     <div className="py-16 px-6 lg:w-8/12 mx-auto">
       <div className="text-center mb-12">
         <h2 className="lg:text-3xl text-2xl text-gray-500 font-bold mb-4">Our Features</h2>
         <p className="text-gray-600">
@@ -64,26 +65,26 @@ const Features = () => {
           See the growing trust and popularity of SwiftShip through our stats.
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-[#9de9b5] rounded- p-6 text-center hover:scale-105 duration-500">
-          <CountUp end={stats.totalParcel} className="text-5xl text-white" />
-          <p className="text-gray-600">Total Parcels Booked</p>
+      <div className="flex justify-center items-center">
+        <div className="space-y-6 rounded p-6 text-center">
+          <CountUp end={stats.totalParcel} className="text-5xl text-white bg-black p-4 rounded-tr-none rounded-3xl" />
+          <p className="text-gray-700">Total Parcels Booked</p>
         </div>
-
-        <div className="bg-[#a9ebeb] rounded p-6 text-center hover:scale-105 duration-500 ">
+        
+        <div className=" rounded p-6 text-center space-y-6 ">
           <CountUp
             end={stats.totalDelivered}
-            className="text-5xl text-green-500"
+            className="text-5xl text-white bg-black p-4 rounded-tr-none rounded-3xl"
           />
-          <p className="text-gray-600">Total Parcels Delivered</p>
+          <p className="text-gray-700">Total Parcels Delivered</p>
         </div>
-
-        <div className="bg-[#b9dbff] rounded p-6 text-center hover:scale-105 duration-500">
+        
+        <div className=" rounded p-6 text-center space-y-6">
           <CountUp
             end={stats.totalUsers}
-            className="text-5xl text-indigo-600"
+            className="text-5xl text-white bg-black p-4 rounded-tr-none rounded-3xl"
           />
-          <p className="text-gray-600">Total Registered Users</p>
+          <p className="text-gray-700">Total Registered Users</p>
         </div>
       </div>
     </div>

@@ -100,13 +100,13 @@ const AllParcel = () => {
   return (
     <div>
       <div className="container mx-auto p-4">
-        <div className="flex justify-between">
-          <h1 className="text-2xl font-semibold text-gray-800 mb-6">
+        <div className="lg:flex justify-between">
+          <h1 className="lg:text-2xl font-semibold text-gray-800 mb-2">
             All Parcels
           </h1>
-          <div className="flex gap-10 items-center">
+          <div className="lg:flex gap-10 items-center">
             <span>Search by date:</span>
-            <div className="flex gap-2">
+            <div className="flex gap-2 py-2">
               <input
                 onChange={(e) => setStartDate(e.target.value)}
                 className="border border-gray-600 p-2 rounded "
@@ -122,27 +122,27 @@ const AllParcel = () => {
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
-            <thead>
+            <thead className="border border-gray-400">
               <tr className="bg-gray-100 text-gray-700">
-                <th className="px-4 py-2 text-left text-sm font-medium">
+                <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                   User Name
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
+                <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                   Phone
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
+                <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                   Booking Date
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
+                <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                   Requested Delivery
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
+                <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                   Cost
                 </th>
-                <th className="px-4 py-2 text-left text-sm font-medium">
+                <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                   Status
                 </th>
-                <th className="px-4 py-2 text-center text-sm font-medium">
+                <th className="px-4 py-2 text-center text-sm font-medium border border-gray-400">
                   Manage
                 </th>
               </tr>
@@ -155,22 +155,22 @@ const AllParcel = () => {
                     index % 2 === 0 ? "bg-gray-50" : "bg-white"
                   } hover:bg-gray-100 transition duration-200`}
                 >
-                  <td className="px-4 py-2 text-sm text-gray-700">
+                  <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                     {parcel.name}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
+                  <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                     {parcel.number}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
+                  <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                     {parcel.date}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
+                  <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                     {parcel.date}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
+                  <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                     {parcel.price}
                   </td>
-                  <td className="px-4 py-2 text-sm text-gray-700">
+                  <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                     <span
                       className={`px-3 py-1 rounded-full text-xs font-semibold ${
                         parcel.status === "pending"
@@ -187,7 +187,7 @@ const AllParcel = () => {
                       {parcel.status}
                     </span>
                   </td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-2 text-center border border-gray-200">
                     <button
                       onClick={() => openDialog(parcel)}
                       className="bg-blue-500 text-white text-sm px-4 py-2 rounded-lg shadow-sm hover:bg-blue-600 transition"

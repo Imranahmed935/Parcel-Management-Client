@@ -130,223 +130,138 @@ const MyParcel = () => {
   }
 
   return (
-    <div className="container mx-auto">
-      <div className="flex justify-between">
-        <h1 className="text-2xl font-bold text-indigo-500 mb-6">My Parcels</h1>
+    <div className="overflow-x-auto bg-white rounded mt-10">
+      <h1 className="lg:text-2xl text-lg font-semibold py-2">All Parcel</h1>
+  <table className="w-full border-collapse border border-gray-300">
+    <thead className="sticky top-0 bg-gray-100 z-10">
+      <tr>
+        <th className="px-4 py-3 border">#</th>
+        <th className="px-4 py-3 border">Parcel Type</th>
+        <th className="px-4 py-3 border">Requested Delivery Date</th>
+        <th className="px-4 py-3 border">Approximate Delivery Date</th>
+        <th className="px-4 py-3 border">Booking Date</th>
+        <th className="px-4 py-3 border">Delivery Men ID</th>
+        <th className="px-4 py-3 border">Booking Status</th>
+        <th className="px-4 py-3 border text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {parcels.map((parcel, index) => (
+        <tr key={parcel._id} className="hover:bg-gray-50">
+          <td className="px-4 py-3 border text-center">{index + 1}</td>
+          <td className="px-4 py-3 border">{parcel.type}</td>
+          <td className="px-4 py-3 border">{parcel.date}</td>
+          <td className="px-4 py-3 border">{parcel.deliveryDate || "Not Set"}</td>
+          <td className="px-4 py-3 border">{new Date(parcel.date).toLocaleDateString()}</td>
+          <td className="px-4 py-3 border text-center">{parcel.deliveryManId || "Not Assigned"}</td>
+          <td className="px-4 py-3 border text-center">
+            <span
+              className={`px-3 py-1 text-sm font-semibold rounded-full 
+                ${parcel.status === "pending" ? "bg-yellow-200 text-yellow-800" :
+                parcel.status === "on the way" ? "bg-blue-200 text-blue-800" :
+                parcel.status === "delivered" ? "bg-green-200 text-green-800" :
+                parcel.status === "returned" ? "bg-red-200 text-red-800" : 
+                "bg-gray-200 text-gray-800"}`}
+            >
+              {parcel.status}
+            </span>
+          </td>
+          <td className="px-4 py-3 border">
+            <div className="flex justify-center items-center space-x-2">
+              {parcel.status === "pending" ? (
+                <>
+                  <Link to={`/dashboard/updateParcel/${parcel._id}`}>
+                    <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
+                      Update
+                    </button>
+                  </Link>
 
-        <div>
-          <Select onValueChange={(value) => setFilter(value)}>
-            <SelectTrigger className="w-[180px] border border-gray-400">
-              <SelectValue placeholder="filter by status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>filter by status</SelectLabel>
-                <SelectItem value="delivered">delivered</SelectItem>
-                <SelectItem value="Cancelled">Cancelled</SelectItem>
-                <SelectItem value="pending">pending</SelectItem>
-                <SelectItem value="On the way">On the way</SelectItem>
-                <SelectItem value="Returned">Returned</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <div className="overflow-x-auto">
-        <table className="table-auto w-full text-left border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="px-4 py-2 border border-gray-300">#</th>
-              <th className="px-4 py-2 border border-gray-300">Parcel Type</th>
-              <th className="px-4 py-2 border border-gray-300">
-                Requested Delivery Date
-              </th>
-              <th className="px-4 py-2 border border-gray-300">
-                Approximate Delivery Date
-              </th>
-              <th className="px-4 py-2 border border-gray-300">Booking Date</th>
-              <th className="px-4 py-2 border border-gray-300">
-                Delivery Men ID
-              </th>
-              <th className="px-4 py-2 border border-gray-300">
-                Booking Status
-              </th>
-              <th className="px-4 py-2 border border-gray-300">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {parcels.map((parcel, index) => (
-              <tr key={parcel._id} className="hover:bg-gray-100">
-                <td className="px-4 py-2 border border-gray-300 text-center">
-                  {index + 1}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {parcel.type}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {parcel.date}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {parcel.deliveryDate || "Not Set"}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {new Date(parcel.date).toLocaleDateString()}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  {JSON.stringify(parcel.deliveryManId) || "Not Set"}
-                </td>
-                <td className="px-4 py-2 border border-gray-300">
-                  <span
-                    className={`px-2 py-1 text-sm rounded-full ${
-                      parcel.status === "pending"
-                        ? "bg-yellow-200 text-yellow-800"
-                        : parcel.status === "on the way"
-                        ? "bg-blue-200 text-blue-800"
-                        : parcel.status === "delivered"
-                        ? "bg-green-200 text-green-800"
-                        : parcel.status === "returned"
-                        ? "bg-red-200 text-red-800"
-                        : "bg-gray-200 text-gray-800"
-                    }`}
+                  <button 
+                    onClick={() => handleCancel(parcel._id)} 
+                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                   >
-                    {parcel.status}
-                  </span>
-                </td>
-                <td className="px-2 py-2 border border-gray-300 flex gap-2 space-y-2">
-                  {parcel.status === "pending" ? (
-                    <>
-                      {/* Update Button */}
-                      <Link to={`/dashboard/updateParcel/${parcel._id}`}>
-                        <button className="px-2  bg-blue-500 text-white rounded hover:bg-blue-600">
-                          Update
+                    Cancel
+                  </button>
+
+                  <Link to={`/dashboard/payment/${parcel._id}`}>
+                    <button className="px-3 py-1 bg-teal-500 text-white rounded hover:bg-teal-600">
+                      Pay
+                    </button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <button 
+                    className="px-3 py-1 bg-gray-300 text-gray-600 rounded cursor-not-allowed"
+                    disabled
+                  >
+                    Update
+                  </button>
+
+                  <button 
+                    className="px-3 py-1 bg-gray-300 text-gray-600 rounded cursor-not-allowed"
+                    disabled
+                  >
+                    Cancel
+                  </button>
+
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <button className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+                        Review
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Submit Your Review</DialogTitle>
+                        <DialogDescription>Provide feedback below.</DialogDescription>
+                      </DialogHeader>
+                      <form className="space-y-4" onSubmit={(e) => handleReview(e, parcel.deliveryManId)}>
+                        <div className="grid gap-2">
+                          <Label htmlFor="name">Name</Label>
+                          <Input type="text" id="name" name="name" defaultValue={parcel.name} />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="image">Image</Label>
+                          <Input type="text" id="image" name="image" defaultValue={parcel.photo} />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="id">Delivery Man ID</Label>
+                          <Input type="text" id="id" name="id" defaultValue={parcel.deliveryManId} readOnly />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="ratings">Rating (1-5)</Label>
+                          <Input type="number" id="ratings" name="ratings" min="1" max="5" placeholder="Rate 1 to 5" />
+                        </div>
+                        <div className="grid gap-2">
+                          <Label htmlFor="review">Your Review</Label>
+                          <textarea 
+                            id="review" 
+                            name="review" 
+                            className="w-full border rounded-md p-2" 
+                            rows="4" 
+                            placeholder="Write your review..."
+                          ></textarea>
+                        </div>
+                        <button 
+                          type="submit" 
+                          className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                          Submit
                         </button>
-                      </Link>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                </>
+              )}
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
 
-                      {/* Cancel Button */}
-                      <button
-                        onClick={() => handleCancel(parcel._id)}
-                        className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                      >
-                        Cancel
-                      </button>
-
-                      {/* Pay Button */}
-                      <Link to={`/dashboard/payment/${parcel._id}`}>
-                        <button className="px-3 py-1 bg-teal-500 text-white rounded hover:bg-teal-600">
-                          Pay
-                        </button>
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        className="px-2  bg-gray-300 text-gray-600 rounded cursor-not-allowed"
-                        disabled
-                      >
-                        Update
-                      </button>
-
-                      <button
-                        className="px-2 py-1 bg-gray-300 text-gray-600 rounded cursor-not-allowed"
-                        disabled
-                      >
-                        Cancel
-                      </button>
-
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <button className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600">
-                            Review
-                          </button>
-                        </DialogTrigger>
-
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Submit Your Review</DialogTitle>
-                            <DialogDescription>
-                              Please provide your feedback below.
-                            </DialogDescription>
-                          </DialogHeader>
-
-                          <form
-                            className="space-y-4"
-                            onSubmit={(e) =>
-                              handleReview(e, parcel.deliveryManId)
-                            }
-                          >
-                            <div className="grid w-full max-w-sm items-center gap-1.5">
-                              <Label htmlFor="name">Name</Label>
-                              <Input
-                                type="text"
-                                id="name"
-                                name="name"
-                                defaultValue={parcel.name}
-                              />
-                            </div>
-
-                            <div className="grid w-full max-w-sm items-center gap-1.5">
-                              <Label htmlFor="image">Image</Label>
-                              <Input
-                                type="text"
-                                id="image"
-                                name="image"
-                                defaultValue={parcel.photo}
-                              />
-                            </div>
-
-                            <div className="grid w-full max-w-sm items-center gap-1.5">
-                              <Label htmlFor="id">Delivery Men’s ID</Label>
-                              <Input
-                                type="text"
-                                id="id"
-                                name="id"
-                                defaultValue={parcel.deliveryManId}
-                                readOnly
-                              />
-                            </div>
-
-                            <div className="grid w-full max-w-sm items-center gap-1.5">
-                              <Label htmlFor="ratings">Rating out of 5</Label>
-                              <Input
-                                type="number"
-                                id="ratings"
-                                name="ratings"
-                                min="1"
-                                max="5"
-                                placeholder="Rate between 1 to 5"
-                              />
-                            </div>
-
-                            <div>
-                              <Label htmlFor="review">Give your Review</Label>
-                              <textarea
-                                id="review"
-                                name="review"
-                                className="w-full border rounded-md p-2"
-                                rows="4"
-                                placeholder="Write your review..."
-                              ></textarea>
-                            </div>
-
-                            <button
-                              type="submit"
-                              className="btn-secondary w-full bg-blue-600 py-1 rounded text-white hover:bg-blue-700"
-                            >
-                              Submit
-                            </button>
-                          </form>
-                        </DialogContent>
-                      </Dialog>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
   );
 };
 

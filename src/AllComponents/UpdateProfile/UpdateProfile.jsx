@@ -23,7 +23,8 @@ const UpdateProfile = () => {
     const name = form.name.value;
     const phone = form.phone.value;
     const email = form.email.value;
-    const updateData = {name,phone, email}
+    const updateData = {name, phone, email}
+    
 
     const res = await axiosSecure.patch(`/updateUser/${user.email}`, updateData)
      if(res.data.modifiedCount > 0){
@@ -46,7 +47,7 @@ const UpdateProfile = () => {
         <input
           type="text"
           defaultValue={data.name}
-          id="name"
+          id="name1"
           name="name"
           className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />
@@ -61,7 +62,7 @@ const UpdateProfile = () => {
         <input
           type="text"
           defaultValue={data.phone}
-          id="name"
+          id="phone1"
           name="phone"
           className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
         />

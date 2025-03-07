@@ -19,16 +19,23 @@ import L from "leaflet";
 // Fix for missing marker icons in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
 const MyDeliveryList = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
 
-  const { data: parcels = [], refetch, isLoading } = useQuery({
+  const {
+    data: parcels = [],
+    refetch,
+    isLoading,
+  } = useQuery({
     queryKey: ["assignMan"],
     queryFn: async () => {
       const res = await axiosSecure.get(`/deliverList/${user.email}`);
@@ -128,29 +135,29 @@ const MyDeliveryList = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
           <thead>
-            <tr className="bg-gray-100 text-gray-700">
-              <th className="px-4 py-2 text-left text-sm font-medium">
+            <tr className="bg-gray-100 text-gray-700 border border-gray-400">
+              <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                 Booked User’s Name
               </th>
-              <th className="px-4 py-2 text-left text-sm font-medium">
+              <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                 Receiver’s Name
               </th>
-              <th className="px-4 py-2 text-left text-sm font-medium">
+              <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                 Booked User’s Phone
               </th>
-              <th className="px-4 py-2 text-left text-sm font-medium">
+              <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                 Requested Delivery Date
               </th>
-              <th className="px-4 py-2 text-left text-sm font-medium">
+              <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                 Approximate Delivery Date
               </th>
-              <th className="px-4 py-2 text-left text-sm font-medium">
+              <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                 Receiver’s Phone
               </th>
-              <th className="px-4 py-2 text-left text-sm font-medium">
+              <th className="px-4 py-2 text-left text-sm font-medium border border-gray-400">
                 Receiver’s Address
               </th>
-              <th className="px-4 py-2 text-center text-sm font-medium">
+              <th className="px-4 py-2 text-center text-sm font-medium border border-gray-400">
                 Actions
               </th>
             </tr>
@@ -163,96 +170,105 @@ const MyDeliveryList = () => {
                   index % 2 === 0 ? "bg-gray-50" : "bg-white"
                 } hover:bg-gray-100 transition duration-200`}
               >
-                <td className="px-4 py-2 text-sm text-gray-700">
+                <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                   {parcel.selected.name}
                 </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
+                <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                   {parcel.selected.receiverName}
                 </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
+                <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                   {parcel.selected.number}
                 </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
+                <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                   {parcel.selected.date}
                 </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
+                <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                   {parcel.deliveryDate || "N/A"}
                 </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
+                <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                   {parcel.selected.receiverPhone}
                 </td>
-                <td className="px-4 py-2 text-sm text-gray-700">
+                <td className="px-4 py-2 text-sm text-gray-700 border border-gray-200">
                   {parcel.selected.address}
                 </td>
-                <td className="px-4 py-2 text-center space-x-2">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <button className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
-                        See Location
-                      </button>
-                    </DialogTrigger>
-
-                    <DialogContent className="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto">
-                      <DialogHeader>
-                        <DialogTitle className="text-2xl font-semibold text-gray-800">
-                          Parcel Location
-                        </DialogTitle>
-                        <DialogDescription className="text-sm text-gray-600">
-                          The map below shows the location of the selected
-                          parcel.
-                        </DialogDescription>
-                      </DialogHeader>
-
-                      <div className="mt-4 w-full h-[500px] rounded-lg overflow-hidden shadow-lg">
-                        {parcel.selected.latitude && parcel.selected.longitude ? (
-                          <MapContainer
-                            center={[parcel.selected.latitude, parcel.selected.longitude]}
-                            zoom={5}
-                            className="w-full h-full"
-                          >
-                            <TileLayer
-                              url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=BefSPM9r2086N4GtobHL"
-                              attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
-                            />
-                            <Marker
-                              position={[parcel.selected.latitude, parcel.selected.longitude]}
+                <td className="px-2 py-2 text-center border border-gray-200">
+                  <div className="flex justify-center items-center gap-2">
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <button className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400">
+                          See
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto">
+                        <DialogHeader>
+                          <DialogTitle className="text-2xl font-semibold text-gray-800">
+                            Parcel Location
+                          </DialogTitle>
+                          <DialogDescription className="text-sm text-gray-600">
+                            The map below shows the location of the selected
+                            parcel.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="mt-4 w-full h-[500px] rounded-lg overflow-hidden shadow-lg">
+                          {parcel.selected.latitude &&
+                          parcel.selected.longitude ? (
+                            <MapContainer
+                              center={[
+                                parcel.selected.latitude,
+                                parcel.selected.longitude,
+                              ]}
+                              zoom={5}
+                              className="w-full h-full"
                             >
-                              <Popup>{parcel.selected.address}</Popup>
-                            </Marker>
-                          </MapContainer>
-                        ) : (
-                          <p className="text-red-500">Location not available</p>
-                        )}
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                              <TileLayer
+                                url="https://api.maptiler.com/maps/basic-v2/256/{z}/{x}/{y}.png?key=BefSPM9r2086N4GtobHL"
+                                attribution='<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+                              />
+                              <Marker
+                                position={[
+                                  parcel.selected.latitude,
+                                  parcel.selected.longitude,
+                                ]}
+                              >
+                                <Popup>{parcel.selected.address}</Popup>
+                              </Marker>
+                            </MapContainer>
+                          ) : (
+                            <p className="text-red-500">
+                              Location not available
+                            </p>
+                          )}
+                        </div>
+                      </DialogContent>
+                    </Dialog>
 
-                  {parcel.selected.status === "Cancelled" ? (
-                    <span className="text-red-500 font-semibold">
-                      Cancelled
-                    </span>
-                  ) : parcel.selected.status === "delivered" ? (
-                    <span className="text-green-500 font-semibold">
-                      Delivered
-                    </span>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => handleStatusChange(parcel._id)}
-                        className="bg-red-500 text-white px-2 py-1 rounded-lg shadow-sm hover:bg-red-600 transition"
-                      >
-                        Cancel
+                    {parcel.selected.status === "Cancelled" ? (
+                      <span className="text-red-500 font-semibold">
+                        Cancelled
+                      </span>
+                    ) : parcel.selected.status === "delivered" ? (
+                      <button className="text-green-500 font-semibold ">
+                        Delivered
                       </button>
-                      <button
-                        onClick={() =>
-                          handleDeliverStatus(parcel._id, parcel.selected)
-                        }
-                        className="bg-blue-500 text-white px-2 py-1 rounded-lg shadow-sm hover:bg-blue-600 transition"
-                      >
-                        Deliver
-                      </button>
-                    </>
-                  )}
+                    ) : (
+                      <>
+                        <button
+                          onClick={() => handleStatusChange(parcel._id)}
+                          className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-red-600 transition"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={() =>
+                            handleDeliverStatus(parcel._id, parcel.selected)
+                          }
+                          className="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition"
+                        >
+                          Deliver
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

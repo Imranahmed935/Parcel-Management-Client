@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin } from 'lucide-react';
 
 const ContactUs = () => {
     return (
-        <div className="min-h-screen flex items-center justify-center p-6 lg:w-9/12 mx-auto">
+        <div className="min-h-screen flex items-center justify-center p-6 lg:w-8/12 mx-auto">
             <div className="w-full bg-white rounded-xl p-10 border border-gray-300">
                 <h2 className="text-4xl font-extrabold text-gray-900 text-center mb-8">Get in Touch</h2>
                 
