@@ -8,7 +8,7 @@ import CountUp from "react-countup";
 const Features = () => {
   const axiosSecure = useAxiosSecure();
   const { data: stats = {} } = useQuery({
-    queryKey: ["stats"],
+    queryKey: ["statsCount"],
     queryFn: async () => {
       const res = await axiosSecure.get("/stats");
       return res.data;

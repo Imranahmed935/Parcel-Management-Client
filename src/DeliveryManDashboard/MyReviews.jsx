@@ -16,7 +16,7 @@ const MyReviews = () => {
     });
 
     const { data: reviews = [] } = useQuery({
-        queryKey: ['reviews', data?._id],
+        queryKey: ['CustomerReviews', data?._id],
         queryFn: async () => {
             const res = await axiosSecure.get(`/reviews/${data?._id}`);
             return res.data;

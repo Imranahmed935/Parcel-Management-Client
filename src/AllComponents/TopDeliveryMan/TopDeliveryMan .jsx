@@ -8,7 +8,7 @@ const TopDeliveryMan = () => {
   const { data: topCounts = [] } = useQuery({
     queryKey: ["topMan"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/user/topDeliveryMan/deliveryMan");
+      const res = await axiosSecure.get("/users/topDeliveryMan/deliveryMan");
       return res.data;
     },
   });

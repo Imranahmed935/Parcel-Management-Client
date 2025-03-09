@@ -67,7 +67,7 @@ const AllParcel = () => {
 
       await axiosSecure.patch(`/users/status/${selected._id}`);
 
-      await axiosSecure.patch(`deliveryManId/status/${selected._id}`, {
+      await axiosSecure.patch(`/deliveryManId/status/${selected._id}`, {
         deliveryman,
         deliveryDate,
       });
